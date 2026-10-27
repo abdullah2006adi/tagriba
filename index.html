@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>سُورَةُ الْفَاتِحَةِ – درس تفاعلي (منصة استعداد)</title>
+<title>الطَّهَارَةُ مِنَ النَّجَاسَاتِ – درس تفاعلي (منصة استعداد)</title>
 <script type="application/json" id="iste3dad-lesson">
-{"id": "g1-alfatiha", "version": 1, "title": "سُورَةُ الْفَاتِحَةِ", "sub": "أَحْفَظُ أَوَّلَ سُورَةٍ فِي الْقُرْآنِ 📖", "icon": "📖", "components": [{"key": "s1", "label": "المحطة (1)", "max": 8}, {"key": "s2", "label": "المحطة (2)", "max": 8}, {"key": "s3", "label": "المحطة (3)", "max": 8}, {"key": "s4", "label": "المحطة (4)", "max": 8}, {"key": "s5", "label": "المحطة (5)", "max": 8}, {"key": "quiz", "label": "الاختبار", "max": 10}], "autoMax": 50, "written": {"max": 0}}
+{"id": "g3-altahara-min-alnajasat", "version": 1, "title": "الطَّهَارَةُ مِنَ النَّجَاسَاتِ", "sub": "وَثِيَابَكَ فَطَهِّرْ 🧼", "icon": "🧼", "components": [{"key": "s1", "label": "المحطة (1)", "max": 8}, {"key": "s2", "label": "المحطة (2)", "max": 8}, {"key": "s3", "label": "المحطة (3)", "max": 8}, {"key": "s4", "label": "المحطة (4)", "max": 8}, {"key": "s5", "label": "المحطة (5)", "max": 8}, {"key": "quiz", "label": "الاختبار", "max": 10}], "autoMax": 50, "written": {"max": 0}}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Baloo+Bhaijaan+2:wght@500;700;800&display=swap" rel="stylesheet">
@@ -313,6 +313,158 @@ header h1{margin:0;font-size:24px;line-height:1.2;font-weight:800;flex:1;min-wid
 .blobs i:nth-child(4){width:120px;height:120px;top:80%;right:20%;--bc:#c9b3ff;--bd:#7c4dff;opacity:.35;animation-delay:-1s}
 .blobs b{position:absolute;width:70px;height:70px;top:35%;left:8%;opacity:.45;border-radius:18px;transform:rotate(20deg);background:linear-gradient(135deg,#a7f3d0,#22c55e);box-shadow:0 14px 0 #15803d55;animation:spin 30s linear infinite}
 
+/* =====================================================================
+   هوية الصف الثالث: «جزيرة الكنوز» — بحر فيروزي مشمس، رمل ذهبي،
+   فقاعات لامعة ثلاثية الأبعاد، لوحات خشبية، وسمكة مرافقة
+   ===================================================================== */
+:root{--ink:#123a4a;--soft:#3f6b78;--r:28px}
+body{
+  background:
+    radial-gradient(520px 320px at 88% 6%, rgba(255,241,150,.95), transparent 60%),
+    linear-gradient(180deg,#7fe3f5 0%,#b6f2fb 38%,#e4fbff 62%,#fff1c9 82%,#ffe1a1 100%);
+  background-attachment:fixed;
+}
+body::before{
+  background-image:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.95) 0 3px, rgba(255,255,255,.25) 4px, transparent 6px),
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.9) 0 2px, rgba(255,255,255,.2) 3px, transparent 4px);
+  background-size:140px 160px, 90px 110px; background-position:0 0, 45px 60px;
+  opacity:.7; animation:bubbleup 14s linear infinite}
+@keyframes bubbleup{from{background-position:0 0,45px 60px}to{background-position:0 -640px,45px -380px}}
+header.top{background:linear-gradient(180deg,#ffffff,#effcff);border-bottom:6px solid #ffd166;box-shadow:0 6px 0 #f4a259,0 10px 20px rgba(0,80,110,.18)}
+header h1{background:linear-gradient(90deg,#0077b6,#00b4d8 45%,#f77f00);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ibtn{background:linear-gradient(180deg,#ffd166,#f4a259);color:#fff;box-shadow:0 5px 0 #c96f2a,0 8px 14px rgba(0,0,0,.15)}
+.ibtn:active{box-shadow:0 1px 0 #c96f2a}
+.pill{background:linear-gradient(180deg,#fff8d6,#ffd166);box-shadow:0 4px 0 #e09f3e,0 6px 12px rgba(0,0,0,.12)}
+
+/* البطل: لوحة خشبية */
+.hero{border-radius:30px;background:linear-gradient(180deg,#fffaf0,#fff1d6);border:5px solid #e0a96d;
+  box-shadow:0 10px 0 #b9794a,0 18px 28px rgba(0,60,90,.18)}
+.hero h2{color:#7a3e12;text-shadow:0 2px 0 #fff}
+.hero .big{width:96px;height:96px;flex:0 0 96px;display:grid;place-items:center;border-radius:50%;font-size:54px;
+  background:radial-gradient(circle at 30% 26%,#fff 0,#bff4ff 35%,#48cae4 80%,#0096c7);box-shadow:inset -8px -10px 16px rgba(0,60,100,.25),0 8px 0 #0077b6}
+
+/* الخريطة: طريق الكنز المتعرّج على الرمل */
+.map::before{content:"";position:absolute;top:50px;bottom:40px;left:50%;width:8px;margin-left:-4px;z-index:0;border-radius:8px;
+  background:repeating-linear-gradient(180deg,#e63946 0 16px,transparent 16px 30px)}
+.node{justify-content:center}
+.node:nth-child(odd){flex-direction:row;padding-inline-end:22%}
+.node:nth-child(even){flex-direction:row-reverse;padding-inline-start:22%}
+.orb{border-radius:50%;
+  background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.98) 0 10%,var(--oc) 34%,var(--od) 78%,var(--os) 100%);
+  box-shadow:inset -12px -14px 24px rgba(0,0,0,.2),inset 10px 10px 18px rgba(255,255,255,.55),0 0 0 6px rgba(255,255,255,.7),0 12px 0 rgba(0,90,120,.25),0 18px 26px rgba(0,60,90,.25)}
+.orb::after{content:"";position:absolute;width:22%;height:14%;top:14%;left:22%;border-radius:50%;background:rgba(255,255,255,.85);transform:rotate(-30deg);pointer-events:none}
+.orb .ring{display:none}
+.orb .num{background:linear-gradient(180deg,#fff,#ffe3a3);box-shadow:0 4px 0 #e09f3e;color:#7a3e12}
+.node .lbl{background:linear-gradient(180deg,#f9dcb0,#e9b97f);color:#5a2a08;border-radius:16px;border:3px solid #b9794a;
+  box-shadow:0 6px 0 #8a5530,0 10px 16px rgba(0,0,0,.15);position:relative}
+.node .lbl::before,.node .lbl::after{content:"";position:absolute;top:50%;width:8px;height:8px;border-radius:50%;background:#8a5530;margin-top:-4px}
+.node .lbl::before{inset-inline-start:6px}.node .lbl::after{inset-inline-end:6px}
+.node .lbl small{color:#b5179e}
+.node.cur .orb::before{content:"⛵";position:absolute;top:-34px;inset-inline-start:-18px;font-size:44px;animation:sail 2s ease-in-out infinite;filter:drop-shadow(0 6px 4px rgba(0,0,0,.25));z-index:3}
+@keyframes sail{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-8px) rotate(6deg)}}
+@keyframes glow{0%,100%{box-shadow:inset -12px -14px 24px rgba(0,0,0,.2),0 0 0 6px rgba(255,255,255,.7),0 12px 0 rgba(0,90,120,.25),0 0 0 0 rgba(255,209,102,.95)}50%{box-shadow:inset -12px -14px 24px rgba(0,0,0,.2),0 0 0 6px rgba(255,255,255,.7),0 12px 0 rgba(0,90,120,.25),0 0 0 20px rgba(255,209,102,0)}}
+.node.locked .orb{filter:grayscale(.75) brightness(1.15)}
+
+/* اللوحات */
+.stagehead .t{color:#023e8a;text-shadow:0 3px 0 #fff,0 0 14px #fff}
+.panel{border-radius:32px;background:#fff;border:4px solid #fff;
+  box-shadow:0 0 0 5px color-mix(in srgb,var(--a) 28%,#bdf1ff),0 12px 0 #48cae4,0 20px 32px rgba(0,80,110,.18)}
+.instr{background:linear-gradient(90deg,#e0f9ff,#fff);box-shadow:inset 0 -5px 0 #90e0ef;border-radius:22px}
+.lcard{border-radius:28px;border:3px solid var(--lc);box-shadow:0 8px 0 var(--lc),0 14px 22px rgba(0,80,110,.1)}
+.lcard .pic{border-radius:40% 60% 55% 45% / 50% 45% 55% 50%;background:radial-gradient(circle at 30% 26%,#fff,var(--lc) 70%);box-shadow:inset -6px -8px 14px rgba(0,0,0,.08)}
+
+/* الخيارات: أصداف ملوّنة */
+.opt{border-radius:30px 30px 22px 22px;background:linear-gradient(180deg,#fff,var(--tc1,#e6fbff));box-shadow:0 9px 0 var(--tc2,#7ad3ea),0 14px 22px rgba(0,80,110,.14);border:3px solid #fff}
+.opt:nth-child(4n+1){--tc1:#e3fbff;--tc2:#4cc9f0}
+.opt:nth-child(4n+2){--tc1:#fff0e5;--tc2:#f4a259}
+.opt:nth-child(4n+3){--tc1:#fde7f3;--tc2:#f78fb3}
+.opt:nth-child(4n+4){--tc1:#e9fbe6;--tc2:#80d468}
+.opt:active{box-shadow:0 2px 0 var(--tc2)}
+.mi{border-radius:24px;background:linear-gradient(180deg,#fff,#eafbff);box-shadow:0 8px 0 #90e0ef,0 12px 18px rgba(0,80,110,.1)}
+.sortitem{border-radius:30px;box-shadow:0 0 0 4px #ffe3a3,0 10px 0 #e09f3e,0 16px 24px rgba(0,0,0,.14)}
+.slot{border-color:#48cae4;color:#0077b6}
+.progress-dots i.cur{background:#f77f00}
+
+/* المشهد: إطار خشبي بحبال */
+.cine{border:0;border-radius:30px;box-shadow:0 0 0 6px #fff,0 0 0 13px #c98a55,0 0 0 16px #8a5530,0 20px 34px rgba(0,60,90,.25)}
+.cine .playbig{background:radial-gradient(circle at 35% 30%,#fff,#48cae4 45%,#0077b6);box-shadow:0 10px 0 #023e8a,0 18px 30px rgba(0,0,0,.3)}
+.cine .dots i.on{background:#f77f00}
+.bubble{border-radius:28px;border:4px solid #90e0ef}
+
+/* البالونات: فقاعات تحت الماء */
+.sky{background:linear-gradient(180deg,#90e0ef,#48cae4 60%,#0096c7);box-shadow:inset 0 -14px 0 #ffd89a,0 10px 0 #0077b6}
+.sky::after{content:"🐠 🐟 🐡";position:absolute;bottom:18px;left:10px;font-size:30px;opacity:.85;animation:swim 9s linear infinite}
+@keyframes swim{from{transform:translateX(-20%)}to{transform:translateX(110%)}}
+
+/* الخلفية: فقاعات وأسماك */
+.blobs i{opacity:.65;background:radial-gradient(circle at 30% 26%,#fff 0 12%,rgba(255,255,255,.35) 30%,var(--bc) 70%,var(--bd) 100%);border:2px solid rgba(255,255,255,.8);animation:floaty 6s ease-in-out infinite}
+.blobs i:nth-child(1){--bc:#bdf3ff;--bd:#48cae4}
+.blobs i:nth-child(2){--bc:#ffd9b0;--bd:#f4a259}
+.blobs i:nth-child(3){--bc:#ffe9a8;--bd:#ffd166}
+.blobs i:nth-child(4){--bc:#cfeaff;--bd:#0096c7;opacity:.4}
+.blobs b{background:none;box-shadow:none;border-radius:0;width:auto;height:auto;font-size:50px;opacity:.95;top:62%;animation:fishswim 16s linear infinite}
+.blobs b::before{content:"🐠"}
+@keyframes fishswim{0%{transform:translateX(-20vw) scaleX(-1)}100%{transform:translateX(120vw) scaleX(-1)}}
+
+.mascot .msg{border-radius:24px 24px 24px 6px;background:#fff;border:3px solid #48cae4}
+.toast{background:linear-gradient(90deg,#0077b6,#00b4d8)}
+.restable td{background:#eafbff}
+/* ===== الصف الثالث: خريطة دوّارة ثلاثية الأبعاد (Coverflow) وصفحات من رُقٍّ قديم ===== */
+.banner3{position:relative;margin:26px auto 10px;max-width:640px}
+.banner3 .rope{position:absolute;top:-18px;left:18%;right:18%;height:30px;border:5px solid #8a5530;border-bottom:0;border-radius:50% 50% 0 0}
+.banner3 .board{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:18px;
+  background:repeating-linear-gradient(0deg,#e9b97f 0 22px,#dca66a 22px 24px);border:5px solid #8a5530;box-shadow:0 8px 0 #5e3518,0 14px 24px rgba(0,0,0,.2)}
+.banner3 .big{font-size:62px;filter:drop-shadow(0 6px 4px rgba(0,0,0,.3));animation:floaty 3s ease-in-out infinite}
+.banner3 h2{margin:0;font-size:28px;color:#4a2208;text-shadow:0 2px 0 #f9dcb0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.banner3 p{margin:2px 0 0;font-size:19px;color:#6b3a14}
+.compass{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin:14px 0 4px}
+.cp{border:0;width:42px;height:42px;border-radius:50%;font-weight:800;font-size:18px;background:#fff;color:#0077b6;box-shadow:0 4px 0 #90e0ef;font-family:inherit}
+.cp.ok{background:#d8f5c8;color:#1f6b00;box-shadow:0 4px 0 #80d468}
+.cp.on{background:linear-gradient(180deg,#ffd166,#f77f00);color:#fff;box-shadow:0 4px 0 #a84d00;transform:scale(1.18)}
+.flowwrap{position:relative}
+.isles{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;padding:26px 14% 34px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.isles::-webkit-scrollbar{display:none}
+.isle{flex:0 0 72%;max-width:340px;scroll-snap-align:center;border-radius:30px;overflow:hidden;background:#fff;transition:transform .15s,opacity .15s;
+  box-shadow:0 0 0 5px #fff,0 14px 0 var(--c3),0 24px 36px rgba(0,60,90,.3);transform-style:preserve-3d}
+.isle .sea{position:relative;height:210px;overflow:hidden;background:linear-gradient(180deg,#8ee6ff 0%,#c9f5ff 48%,var(--c1) 49%,var(--c2) 100%)}
+.isle .sun3{position:absolute;top:16px;inset-inline-end:20px;width:50px;height:50px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff7b0,#ffd23f 60%,#ffab00);box-shadow:0 0 26px #ffe066}
+.isle .land{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);font-size:110px;filter:drop-shadow(0 12px 8px rgba(0,0,0,.3));animation:floaty 3.4s ease-in-out infinite}
+.isle .ico{position:absolute;top:18px;inset-inline-start:18px;width:68px;height:68px;border-radius:50%;display:grid;place-items:center;font-size:38px;
+  background:radial-gradient(circle at 30% 26%,#fff 0 12%,rgba(255,255,255,.4) 35%,var(--c1) 80%);border:3px solid #fff;box-shadow:0 8px 14px rgba(0,0,0,.18)}
+.isle .wave{position:absolute;left:-10%;right:-10%;bottom:-6px;height:34px;background:radial-gradient(circle at 20px -4px,transparent 22px,rgba(255,255,255,.75) 23px) 0 0/40px 34px repeat-x;animation:wavey 3s linear infinite}
+@keyframes wavey{to{background-position:40px 0}}
+.isle .lock{position:absolute;inset:0;display:grid;place-items:center;font-size:64px;background:rgba(255,255,255,.35)}
+.isle .flag{position:absolute;top:60px;left:58%;font-size:40px;animation:wave 1.4s infinite}
+.isle .info{padding:14px 16px 18px;text-align:center;background:linear-gradient(180deg,#fffaf0,#fff1d6)}
+.isle .no{display:inline-block;font-size:17px;font-weight:800;color:#fff;background:var(--c2);padding:2px 14px;border-radius:999px;box-shadow:0 3px 0 var(--c3)}
+.isle h3{margin:8px 0 4px;font-size:26px;line-height:1.3;color:#3d1d06;min-height:2.6em;display:flex;align-items:center;justify-content:center}
+.isle .stars{font-size:26px;letter-spacing:4px;color:#f5a400;margin-bottom:10px}
+.isle .btn3d{font-size:21px;padding:10px 20px}
+.isle.locked{filter:saturate(.55)}
+.isle.cur{box-shadow:0 0 0 5px #fff,0 0 0 10px #ffd166,0 14px 0 var(--c3),0 24px 36px rgba(0,60,90,.3)}
+.isle.chest{--c1:#ffe27a;--c2:#ffb703;--c3:#a86a00}
+.arr{position:absolute;top:44%;z-index:5;border:0;width:48px;height:48px;border-radius:50%;font-size:34px;line-height:1;color:#fff;background:linear-gradient(180deg,#48cae4,#0077b6);box-shadow:0 5px 0 #023e8a}
+.arr.prev{inset-inline-start:2px}.arr.next{inset-inline-end:2px}
+.swipe{text-align:center;color:var(--soft);font-size:18px;margin:-12px 0 14px}
+/* صفحات المحطة: رقّ قديم وأثر أقدام */
+.stagehead{justify-content:center}
+.stagehead .t{flex:0 1 auto;text-align:center;font-size:26px;color:#4a2208;padding:10px 26px;border-radius:12px;text-shadow:0 2px 0 #f9dcb0;
+  background:repeating-linear-gradient(0deg,#e9b97f 0 18px,#dca66a 18px 20px);border:4px solid #8a5530;box-shadow:0 6px 0 #5e3518}
+.trail{display:flex;align-items:center;justify-content:center;gap:2px;margin:6px 0 14px;flex-wrap:wrap}
+.trail span{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:22px;background:#fff;color:#b9794a;box-shadow:0 4px 0 #e0c39b}
+.trail span.ok{background:#d8f5c8;box-shadow:0 4px 0 #80d468}
+.trail span.on{background:#ffd166;box-shadow:0 4px 0 #e09f3e;transform:scale(1.2)}
+.trail i{width:16px;border-top:4px dotted #b9794a}
+.panel{background:linear-gradient(180deg,#fffaf0,#fdf0d5);border:0;border-radius:10px;margin:26px 0;
+  box-shadow:0 10px 24px rgba(90,50,10,.22),inset 0 0 40px rgba(201,138,85,.18)}
+.panel::before,.panel::after{content:"";position:absolute;left:-12px;right:-12px;height:22px;border-radius:12px;background:linear-gradient(180deg,#c98a55,#8a5530);box-shadow:0 4px 8px rgba(0,0,0,.25)}
+.panel::before{top:-14px}.panel::after{bottom:-14px}
+.instr{background:transparent;box-shadow:none;border-bottom:3px dashed #c98a55;border-radius:0;color:#5a2a08}
+.lcard{background:#fff;border-radius:16px;border:2px solid #f0d9b5;box-shadow:0 6px 0 #e9cfa3}
+.lcard .pic{border-radius:50%}
+.isle .sea{background:linear-gradient(180deg,#8ee6ff 0%,#d4f7ff 44%,#48cae4 45%,#0096c7 72%,var(--c1) 73%,var(--c2) 100%)}
+
 </style>
 </head>
 <body>
@@ -328,75 +480,56 @@ header h1{margin:0;font-size:24px;line-height:1.2;font-weight:800;flex:1;min-wid
 <div class="toast" id="toast"></div>
 <script>
 const L = {
-  id:'g1-alfatiha', version:1, file:'1-01-surat-alfatiha', grade:'الصف الأول',
-  title:'سُورَةُ الْفَاتِحَةِ', sub:'أَحْفَظُ أَوَّلَ سُورَةٍ فِي الْقُرْآنِ 📖', icon:'📖', hero:'📖',
-  theme:{a:'#ff5fa2', b:'#7c4dff', sky1:'#7ee8fa', sky2:'#c3b1ff'},
+  id:'g3-altahara-min-alnajasat', version:1, file:'3-07-altahara-min-alnajasat', grade:'الصف الثالث',
+  title:'الطَّهَارَةُ مِنَ النَّجَاسَاتِ', sub:'وَثِيَابَكَ فَطَهِّرْ 🧼', icon:'🧼', hero:'🫧',
+  theme:{a:'#0284c7', b:'#16a34a', sky1:'#bae6fd', sky2:'#bbf7d0'},
   stations:[
-    {title:'كِتَابُ اللّٰهِ', icon:'📗',
+    {title:'فِي حَدِيقَةِ أَسْبَايِرَ', icon:'🌳',
+     learn:[{title:'شَاهِدِ الْقِصَّةَ', cartoon:[
+       {bg:'garden', props:[{e:'🌳', x:78, s:1.5}], actors:[{e:'👦', x:25, a:'jump'}, {e:'⚽', x:45, a:'bounce', s:.6, y:25}, {e:'👧', x:62, a:'jump'}], say:'يَلْعَبُ سُلْطَانُ مَعَ أُخْتِهِ رِيمَ فِي حَدِيقَةِ أَسْبَايِرَ مَعَ وُجُودِ الْعَائِلَةِ.'},
+       {bg:'garden', actors:[{e:'👦', x:30, a:'shake'}, {e:'👕', x:55, a:'pulse', s:.8, y:35}], say:'وَعِنْدَمَا حَانَ مَوْعِدُ الصَّلَاةِ، أَرَادَ سُلْطَانُ أَنْ يُصَلِّيَ بِثِيَابِهِ الَّتِي لَعِبَ بِهَا.'},
+       {bg:'garden', actors:[{e:'👦', x:28, a:'pulse'}, {e:'❓', x:48, a:'bounce', s:.7, y:45}, {e:'👧', x:68, a:'wave'}], say:'لَكِنَّهُ تَسَاءَلَ هُوَ وَأُخْتُهُ رِيمُ: هَلْ تَجُوزُ الصَّلَاةُ بِثَوْبٍ أَصَابَهُ التُّرَابُ أَوِ الطِّينُ؟'},
+       {bg:'mosque', actors:[{e:'👨', x:30, a:'wave'}, {e:'😊', x:60, a:'jump'}], say:'قَالَ الْأَبُ: التُّرَابُ وَالطِّينُ لَيْسَا نَجَاسَةً، فَالصَّلَاةُ صَحِيحَةٌ. أَمَّا النَّجَاسَةُ فَيَجِبُ أَنْ نُطَهِّرَهَا.'}]}],
+     game:{type:'pick', q:'فَكِّرْ وَاخْتَرْ', rounds:[
+       {pic:'🧼', q:'النَّجَاسَةُ هِيَ:', opts:[{t:'الْقَذَارَةُ الَّتِي أَمَرَنَا الْإِسْلَامُ بِالتَّطَهُّرِ مِنْهَا'}, {t:'التُّرَابُ النَّظِيفُ'}, {t:'الْمَاءُ'}], a:0},
+       {pic:'👕', q:'هَلْ تَصِحُّ الصَّلَاةُ بِثَوْبٍ عَلَيْهِ آثَارُ تُرَابٍ أَوْ طِينٍ؟', opts:[{e:'✅', t:'نَعَمْ، لِأَنَّ التُّرَابَ لَيْسَ نَجَاسَةً'}, {e:'❌', t:'لَا تَصِحُّ أَبَدًا'}], a:0}]}},
+    {title:'أَمْثِلَةٌ عَلَى النَّجَاسَاتِ', icon:'⚠️',
+     learn:[{title:'مَفْهُومُ النَّجَاسَةِ وَأَمْثِلَتُهَا', cards:[
+       {pic:'🧼', t:'النَّجَاسَةُ: هِيَ الْقَذَارَةُ الَّتِي أَمَرَنَا الْإِسْلَامُ بِالتَّطَهُّرِ مِنْهَا.'},
+       {pic:'💩', t:'الْغَائِطُ.'}, {pic:'💧', t:'الْبَوْلُ.'}, {pic:'🤢', t:'الْقَيْءُ.'}, {pic:'🩸', t:'الدَّمُ الْكَثِيرُ.'}]}],
+     game:{type:'sort', q:'نَجَاسَةٌ أَمْ لَيْسَ نَجَاسَةً؟', bins:[{t:'نَجَاسَةٌ', e:'⚠️', c:'r'}, {t:'لَيْسَ نَجَاسَةً', e:'✅', c:'g'}], items:[
+       {e:'💩', t:'الْغَائِطُ', b:0}, {e:'💧', t:'الْبَوْلُ', b:0}, {e:'🤢', t:'الْقَيْءُ', b:0}, {e:'🩸', t:'الدَّمُ الْكَثِيرُ', b:0},
+       {e:'🟤', t:'الطِّينُ', b:1}, {e:'☕', t:'بُقْعَةُ الشَّايِ', b:1}, {e:'🏖️', t:'التُّرَابُ', b:1}]}},
+    {title:'حُكْمُ إِزَالَةِ النَّجَاسَةِ', icon:'📖',
      learn:[
-      {title:'شَاهِدِ الْقِصَّةَ', cartoon:[
-        {bg:'room', actors:[{e:'👦', x:30, a:'wave'}, {e:'📖', x:60, a:'float', s:.8, y:30}], say:'هَذَا الْقُرْآنُ الْكَرِيمُ، كِتَابُ اللّٰهِ تَعَالَى.'},
-        {bg:'room', actors:[{e:'👦', x:40, a:'jump'}, {e:'💖', x:62, a:'pulse', s:.7, y:40}], say:'أَنَا أُحِبُّ الْقُرْآنَ الْكَرِيمَ.'},
-        {bg:'bath', actors:[{e:'🧒', x:35, a:'bounce'}, {e:'💧', x:60, a:'float', s:.6, y:40}], say:'أَتَوَضَّأُ قَبْلَ أَنْ أَقْرَأَ الْقُرْآنَ.'},
-        {bg:'room', props:[{e:'🗄️', x:62, y:14, s:1.2}], actors:[{e:'👧', x:25, a:'walk', from:5}, {e:'📖', x:66, a:'float', s:.6, y:52}], say:'أَضَعُ الْمُصْحَفَ فِي مَكَانٍ عَالٍ نَظِيفٍ.'},
-        {bg:'mosque', actors:[{e:'👦', x:30, a:'pulse'}, {e:'👂', x:58, a:'bounce', s:.7, y:30}], say:'إِذَا قُرِئَ الْقُرْآنُ أَسْكُتُ وَأَسْتَمِعُ.'},
-        {bg:'mosque', actors:[{e:'📖', x:45, a:'float'}], say:'﴿وَإِذَا قُرِئَ الْقُرْآنُ فَاسْتَمِعُوا لَهُ وَأَنصِتُوا لَعَلَّكُمْ تُرْحَمُونَ﴾', ay:true, rec:[7, 204]}
-      ]}
-     ],
-     game:{type:'sort', q:'أَيْنَ تَضَعُ الصُّورَةَ؟ سُلُوكٌ صَحِيحٌ أَمْ خَطَأٌ؟', bins:[{t:'صَحِيح', e:'😀', c:'g'}, {t:'خَطَأ', e:'😟', c:'r'}], items:[
-       {e:'💧', t:'أَتَوَضَّأُ قَبْلَ قِرَاءَةِ الْقُرْآنِ', b:0},
-       {e:'🗄️', t:'أَضَعُ الْمُصْحَفَ فِي مَكَانٍ عَالٍ', b:0},
-       {e:'👂', t:'أَسْتَمِعُ إِلَى الْقُرْآنِ بِهُدُوءٍ', b:0},
-       {e:'🗣️', t:'أَتَكَلَّمُ وَزَمِيلِي يَقْرَأُ الْقُرْآنَ', b:1},
-       {e:'⬇️', t:'أَتْرُكُ الْمُصْحَفَ عَلَى الْأَرْضِ', b:1},
-       {e:'⚽', t:'أَلْعَبُ وَقْتَ قِرَاءَةِ الْقُرْآنِ', b:1}]}},
-    {title:'أَسْتَمِعُ وَأَحْفَظُ', icon:'🎧',
-     learn:[{title:'اِسْتَمِعْ إِلَى سُورَةِ الْفَاتِحَةِ وَرَدِّدْ', quran:{s:1, a1:1, a2:7, basmala:false, ayat:["بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", "الرَّحْمَٰنِ الرَّحِيمِ", "مَالِكِ يَوْمِ الدِّينِ", "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ", "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ"]}}],
-     game:{type:'order', q:'رَتِّبْ آيَاتِ سُورَةِ الْفَاتِحَةِ', items:[
-       {t:'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ'}, {t:'الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ'}, {t:'الرَّحْمَٰنِ الرَّحِيمِ'}, {t:'مَالِكِ يَوْمِ الدِّينِ'}]}},
-    {title:'مَعَانِي الْكَلِمَاتِ', icon:'💎',
-     learn:[{title:'تَعَرَّفْ مَعَانِيَ الْكَلِمَاتِ', cards:[
-       {pic:'🤲', t:'﴿الْحَمْدُ لِلَّهِ﴾: الشُّكْرُ لِلّٰهِ.'},
-       {pic:'🌍', t:'﴿رَبِّ الْعَالَمِينَ﴾: رَبُّ جَمِيعِ الْمَخْلُوقَاتِ.'},
-       {pic:'⚖️', t:'﴿يَوْمِ الدِّينِ﴾: يَوْمُ الْقِيَامَةِ.'},
-       {pic:'🙏', t:'﴿وَإِيَّاكَ نَسْتَعِينُ﴾: نَطْلُبُ مِنْكَ الْمُسَاعَدَةَ.'},
-       {pic:'🛣️', t:'﴿الصِّرَاطَ الْمُسْتَقِيمَ﴾: الطَّرِيقُ الْحَقُّ.'}]}],
-     game:{type:'match', q:'صِلِ الْكَلِمَةَ بِمَعْنَاهَا', pairs:[
-       [{t:'الْحَمْدُ لِلَّهِ'}, {e:'🤲', t:'الشُّكْرُ لِلّٰهِ'}],
-       [{t:'رَبِّ الْعَالَمِينَ'}, {e:'🌍', t:'رَبُّ الْمَخْلُوقَاتِ'}],
-       [{t:'يَوْمِ الدِّينِ'}, {e:'⚖️', t:'يَوْمُ الْقِيَامَةِ'}],
-       [{t:'نَسْتَعِينُ'}, {e:'🙏', t:'نَطْلُبُ الْمُسَاعَدَةَ'}],
-       [{t:'الصِّرَاطَ الْمُسْتَقِيمَ'}, {e:'🛣️', t:'الطَّرِيقُ الْحَقُّ'}]]}},
-    {title:'أُكْمِلُ الْآيَةَ', icon:'🧩',
-     learn:[{title:'اِسْتَمِعْ مَرَّةً أُخْرَى قَبْلَ اللَّعِبِ', quran:{s:1, a1:2, a2:7, ayat:["الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", "الرَّحْمَٰنِ الرَّحِيمِ", "مَالِكِ يَوْمِ الدِّينِ", "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ", "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ"]}}],
-     game:{type:'ayah', q:'اِخْتَرِ الْكَلِمَةَ النَّاقِصَةَ', rounds:[
-       {pre:'الْحَمْدُ لِلَّهِ رَبِّ', post:'', w:['الْعَالَمِينَ', 'النَّاسِ', 'الْفَلَقِ'], rec:[1, 2]},
-       {pre:'مَالِكِ يَوْمِ', post:'', w:['الدِّينِ', 'الْجُمُعَةِ', 'الْعِيدِ'], rec:[1, 4]},
-       {pre:'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ', post:'', w:['نَسْتَعِينُ', 'نَشْكُرُ', 'نُحِبُّ'], rec:[1, 5]},
-       {pre:'اهْدِنَا الصِّرَاطَ', post:'', w:['الْمُسْتَقِيمَ', 'الطَّوِيلَ', 'الْكَبِيرَ'], rec:[1, 6]}]}},
-    {title:'أَتَعَلَّمُ مِنَ الْفَاتِحَةِ', icon:'🌟',
-     learn:[
-      {title:'أَسْتَفِيدُ مِنْ سُورَةِ الْفَاتِحَةِ', cards:[
-        {pic:'🍎', t:'أَحْمَدُ اللّٰهَ تَعَالَى عَلَى نِعَمِهِ.'},
-        {pic:'🕌', t:'أَعْبُدُ اللّٰهَ تَعَالَى وَحْدَهُ.'},
-        {pic:'🤲', t:'أَسْأَلُ اللّٰهَ تَعَالَى الْهِدَايَةَ لِطَرِيقِ الْحَقِّ.'}]},
-      {title:'مَاذَا أَقُولُ؟', cartoon:[
-        {bg:'room', props:[{e:'🍽️', x:50, y:14, s:.9}], actors:[{e:'👦', x:25, a:'bounce'}], say:'قَبْلَ أَنْ آكُلَ أَقُولُ: بِسْمِ اللّٰهِ.'},
-        {bg:'room', props:[{e:'🍽️', x:50, y:14, s:.9}], actors:[{e:'😋', x:25, a:'jump'}], say:'بَعْدَ أَنْ آكُلَ أَقُولُ: الْحَمْدُ لِلّٰهِ.'},
-        {bg:'school', props:[{e:'📚', x:55, y:14, s:.9}], actors:[{e:'👧', x:25, a:'wave'}], say:'قَبْلَ أَنْ أُذَاكِرَ أَقُولُ: بِسْمِ اللّٰهِ، وَبَعْدَهَا: الْحَمْدُ لِلّٰهِ.'}
-      ]}],
-     game:{type:'pick', q:'مَاذَا تَقُولُ؟', rounds:[
-       {pic:'🍽️', q:'قَبْلَ أَنْ تَأْكُلَ تَقُولُ:', opts:[{e:'🌟', t:'بِسْمِ اللّٰهِ'}, {e:'🤲', t:'الْحَمْدُ لِلّٰهِ'}, {e:'👋', t:'مَعَ السَّلَامَةِ'}], a:0},
-       {pic:'😋', q:'بَعْدَ أَنْ تَأْكُلَ تَقُولُ:', opts:[{e:'🤲', t:'الْحَمْدُ لِلّٰهِ'}, {e:'🌟', t:'بِسْمِ اللّٰهِ'}, {e:'😴', t:'تُصْبِحُ عَلَى خَيْرٍ'}], a:0},
-       {pic:'🎁', q:'أَعْطَاكَ اللّٰهُ نِعْمَةً جَمِيلَةً، تَقُولُ:', opts:[{e:'🤲', t:'الْحَمْدُ لِلّٰهِ'}, {e:'😐', t:'لَا شَيْءَ'}, {e:'👋', t:'مَرْحَبًا'}], a:0},
-       {pic:'🛣️', q:'نَطْلُبُ مِنَ اللّٰهِ أَنْ يَهْدِيَنَا إِلَى:', opts:[{e:'✅', t:'الطَّرِيقِ الْحَقِّ'}, {e:'❌', t:'الطَّرِيقِ الْخَطَأِ'}, {e:'🎮', t:'اللَّعِبِ فَقَطْ'}], a:0}]}}
+       {title:'قَالَ تَعَالَى', cartoon:[{bg:'mosque', actors:[{e:'📖', x:42, a:'float'}], say:'﴿وَثِيَابَكَ فَطَهِّرْ﴾', ay:true, rec:[74, 4]}]},
+       {title:'حُكْمُ إِزَالَةِ النَّجَاسَةِ', cards:[{pic:'✅', t:'إِزَالَةُ النَّجَاسَةِ وَاجِبَةٌ، وَشَرْطٌ لِصِحَّةِ الصَّلَاةِ.'}, {pic:'🦠', t:'أَضْرَارُ النَّجَاسَاتِ: ١- تُصِيبُ الْفَرْدَ بِالْأَمْرَاضِ الْخَطِيرَةِ. ٢- تُسَبِّبُ انْتِشَارَ الْجَرَاثِيمِ.'}]}],
+     game:{type:'sort', q:'نَعَمْ أَمْ لَا؟', bins:[{t:'نَعَمْ', e:'👍', c:'g'}, {t:'لَا', e:'👎', c:'r'}], items:[
+       {e:'🧼', t:'يَجِبُ التَّطَهُّرُ مِنْ كُلِّ النَّجَاسَاتِ', b:0}, {e:'🚿', t:'تُغْسَلُ النَّجَاسَةُ الْمَرْئِيَّةُ بِالْمَاءِ حَتَّى تَزُولَ', b:0}, {e:'🦠', t:'النَّجَاسَاتُ تُسَبِّبُ انْتِشَارَ الْجَرَاثِيمِ', b:0},
+       {e:'🧎', t:'تَصِحُّ الصَّلَاةُ مَعَ النَّجَاسَةِ', b:1}, {e:'😷', t:'النَّجَاسَاتُ مُفِيدَةٌ لِلصِّحَّةِ', b:1}]}},
+    {title:'طُرُقُ إِزَالَةِ النَّجَاسَةِ', icon:'🚿',
+     learn:[{title:'تُزَالُ النَّجَاسَاتُ بِطُرُقٍ عِدَّةٍ', cards:[
+       {pic:'🚿', t:'١- الْغَسْلُ بِالْمَاءِ: النَّجَاسَةُ الْمَرْئِيَّةُ: تَكْرَارُ الْغَسْلِ حَتَّى تَزُولَ النَّجَاسَةُ. وَالنَّجَاسَةُ غَيْرُ الْمَرْئِيَّةِ: الْغَسْلُ مَرَّةً وَاحِدَةً.'},
+       {pic:'👟', t:'٢- الدَّلْكُ بِتُرَابِ الْأَرْضِ: كَالْحِذَاءِ الْمُتَنَجِّسِ، يُدْلَكُ بِتُرَابِ الْأَرْضِ حَتَّى تَزُولَ النَّجَاسَةُ.'},
+       {pic:'🥣', t:'٣- التَّطْهِيرُ بِالْمَاءِ وَالتُّرَابِ: لِلْإِنَاءِ الَّذِي وَلَغَ فِيهِ الْكَلْبُ، يُغْسَلُ سَبْعَ مَرَّاتٍ إِحْدَاهُنَّ بِالتُّرَابِ.'}]}],
+     game:{type:'match', q:'صِلْ كُلَّ حَالَةٍ بِالطَّرِيقَةِ الْمُنَاسِبَةِ لِإِزَالَةِ النَّجَاسَةِ', pairs:[
+       [{e:'🩸', t:'دَمٌ كَثِيرٌ عَلَى الْبَدَنِ'}, {t:'تَكْرَارُ الْغَسْلِ حَتَّى تَزُولَ'}], [{e:'👕', t:'ثَوْبٌ أَصَابَهُ بَوْلٌ غَيْرُ مَرْئِيٍّ'}, {t:'الْغَسْلُ مَرَّةً وَاحِدَةً'}], [{e:'🐕', t:'إِنَاءٌ وَلَغَ فِيهِ الْكَلْبُ'}, {t:'سَبْعُ مَرَّاتٍ إِحْدَاهُنَّ بِالتُّرَابِ'}], [{e:'👟', t:'حِذَاءٌ مُتَنَجِّسٌ'}, {t:'الدَّلْكُ بِتُرَابِ الْأَرْضِ'}]]}},
+    {title:'أُبْدِي رَأْيِي', icon:'🐑',
+     learn:[{title:'مَوَاقِفُ', cartoon:[
+       {bg:'garden', actors:[{e:'🐑', x:42, a:'bounce', s:1.1}], say:'الْمَوْقِفُ الْأَوَّلُ: سَقَطَ دَمُ الْخَرُوفِ عَلَى الْأَرْضِ أَثْنَاءَ ذَبْحِهِ. نَغْسِلُ الْمَكَانَ بِالْمَاءِ حَتَّى تَزُولَ النَّجَاسَةُ.'},
+       {bg:'room', actors:[{e:'🐈', x:42, a:'pulse', s:1.1}], say:'الْمَوْقِفُ الثَّانِي: رَوْثُ الْقِطَّةِ عَلَى سَجَّادَةِ الْمَجْلِسِ. نُزِيلُهُ، وَنُكَرِّرُ الْغَسْلَ بِالْمَاءِ حَتَّى تَزُولَ النَّجَاسَةُ.'},
+       {bg:'desert', actors:[{e:'🧒', x:30, a:'walk'}, {e:'👟', x:55, a:'shake', s:.8, y:30}], say:'الْمَوْقِفُ الثَّالِثُ: دَاسَ خَالِدٌ بِالْخَطَأِ بِنِعَالِهِ عَلَى نَجَاسَةٍ فِي الطَّرِيقِ. يَدْلُكُ نِعَالَهُ بِالْأَرْضِ.'}]}],
+     game:{type:'pick', q:'اِخْتَرِ الطَّرِيقَةَ الصَّحِيحَةَ', rounds:[
+       {pic:'🐈', q:'أَصَابَ رَوْثُ قِطَّةٍ سَجَّادَةَ صَلَاةٍ:', opts:[{t:'تَكْرَارُ الْغَسْلِ بِالْمَاءِ'}, {t:'الدَّلْكُ بِالْأَرْضِ'}, {t:'غَسْلُهَا سَبْعَ مَرَّاتٍ إِحْدَاهُنَّ بِالتُّرَابِ'}], a:0},
+       {pic:'🐕', q:'اقْتَرَبَ كَلْبٌ مِنْ وِعَاءٍ فِيهِ مَاءٌ وَشَرِبَ مِنْهُ:', opts:[{t:'غَسْلُهُ سَبْعَ مَرَّاتٍ إِحْدَاهُنَّ بِالتُّرَابِ'}, {t:'الدَّلْكُ بِالْأَرْضِ'}, {t:'لَا شَيْءَ'}], a:0},
+       {pic:'👟', q:'دَاسَ خَالِدٌ بِالْخَطَأِ بِنِعَالِهِ عَلَى نَجَاسَةٍ فِي الطَّرِيقِ:', opts:[{t:'الدَّلْكُ بِالْأَرْضِ'}, {t:'غَسْلُهَا سَبْعَ مَرَّاتٍ'}, {t:'يَرْمِيهَا'}], a:0}]}}
   ],
   quiz:[
-    {pic:'📖', q:'الْقُرْآنُ الْكَرِيمُ كِتَابُ:', opts:[{e:'🌟', t:'اللّٰهِ تَعَالَى'}, {e:'👨‍🏫', t:'الْمُعَلِّمِ'}, {e:'📰', t:'الْقِصَصِ'}], a:0},
-    {pic:'⚖️', q:'﴿يَوْمِ الدِّينِ﴾ هُوَ:', opts:[{e:'⚖️', t:'يَوْمُ الْقِيَامَةِ'}, {e:'🎉', t:'يَوْمُ الْعِيدِ'}, {e:'🕌', t:'يَوْمُ الْجُمُعَةِ'}], a:0},
-    {pic:'🤲', q:'﴿الْحَمْدُ لِلَّهِ﴾ مَعْنَاهَا:', opts:[{e:'🤲', t:'نَشْكُرُ اللّٰهَ'}, {e:'🙏', t:'نَسْتَعِينُ بِاللّٰهِ'}, {e:'🕌', t:'نَعْبُدُ اللّٰهَ'}], a:0},
-    {pic:'💧', q:'قَبْلَ قِرَاءَةِ الْقُرْآنِ:', opts:[{e:'💧', t:'أَتَوَضَّأُ'}, {e:'⚽', t:'أَلْعَبُ'}, {e:'😴', t:'أَنَامُ'}], a:0},
-    {pic:'👂', q:'إِذَا قُرِئَ الْقُرْآنُ:', opts:[{e:'👂', t:'أَسْتَمِعُ وَأَسْكُتُ'}, {e:'🗣️', t:'أَتَكَلَّمُ'}, {e:'🏃', t:'أَرْكُضُ'}], a:0}
+    {pic:'🧼', q:'إِزَالَةُ النَّجَاسَةِ:', opts:[{t:'وَاجِبَةٌ وَشَرْطٌ لِصِحَّةِ الصَّلَاةِ'}, {t:'غَيْرُ مُهِمَّةٍ'}, {t:'لِلْكِبَارِ فَقَطْ'}], a:0},
+    {pic:'⚠️', q:'مِنْ أَمْثِلَةِ النَّجَاسَاتِ:', opts:[{e:'💧', t:'الْبَوْلُ'}, {e:'🏖️', t:'التُّرَابُ'}, {e:'🌸', t:'الْوَرْدُ'}], a:0},
+    {pic:'🐕', q:'إِذَا وَلَغَ الْكَلْبُ فِي إِنَاءٍ يُغْسَلُ:', opts:[{t:'سَبْعَ مَرَّاتٍ إِحْدَاهُنَّ بِالتُّرَابِ'}, {t:'مَرَّةً وَاحِدَةً'}, {t:'ثَلَاثَ مَرَّاتٍ'}], a:0},
+    {pic:'🦠', q:'مِنْ أَضْرَارِ النَّجَاسَاتِ:', opts:[{t:'تُسَبِّبُ انْتِشَارَ الْجَرَاثِيمِ'}, {t:'تُقَوِّي الْجِسْمَ'}, {t:'تُجَمِّلُ الْمَكَانَ'}], a:0},
+    {pic:'📖', q:'﴿وَثِيَابَكَ ……﴾', opts:[{t:'فَطَهِّرْ'}, {t:'فَاغْسِلْ'}, {t:'فَالْبَسْ'}], a:0}
   ]
 };
 
@@ -417,7 +550,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 /* ================= الأصوات ================= */
 const AU = {ctx:null, mute:false};
-const NOTES = [523.25, 587.33, 659.25, 783.99, 880, 1046.5, 1174.66, 1318.5];
+const NOTES = [392, 440, 523.25, 587.33, 659.25, 783.99, 880, 1046.5];
 function ac() { AU.ctx = AU.ctx || new (window.AudioContext || window.webkitAudioContext)(); if (AU.ctx.state === 'suspended') AU.ctx.resume(); return AU.ctx; }
 function tone(f, d, o) {
   o = o || {}; const c = ac(), t = c.currentTime + (o.at || 0);
@@ -431,7 +564,10 @@ function snd(k) {
   if (AU.mute) return;
   try {
     switch (k) {
-      case 'tap': { const f = pick1(NOTES); tone(f, .25, {type:'sine', v:.18}); tone(f * 2, .12, {type:'sine', v:.05}); break; }
+      case 'tap': { const f = pick1(NOTES); tone(f, .3, {type:'sine', v:.2}); tone(f * 1.5, .2, {type:'sine', v:.07, at:.05}); break; }
+      case 'bubble': tone(300, .12, {to:900, type:'sine', v:.2}); tone(600, .1, {to:1500, type:'sine', v:.1, at:.08}); break;
+      case 'drop': tone(1400, .18, {to:500, type:'sine', v:.16}); break;
+      case 'marimba': { const f = pick1(NOTES); tone(f, .4, {type:'triangle', v:.2}); tone(f * 4, .06, {type:'sine', v:.05}); break; }
       case 'pop': tone(900, .08, {to:200, type:'square', v:.12}); tone(1400, .05, {type:'sine', v:.1, at:.02}); break;
       case 'boing': tone(220, .35, {to:660, type:'triangle', v:.2}); tone(660, .25, {to:330, type:'triangle', v:.12, at:.2}); break;
       case 'bell': [1318.5, 1760].forEach((f, i) => tone(f, .6, {type:'sine', v:.12, at:i * .08})); break;
@@ -448,7 +584,7 @@ function snd(k) {
 }
 document.addEventListener('pointerdown', e => {
   const b = e.target.closest('button'); if (!b || b.dataset.nos !== undefined) return;
-  snd(b.dataset.s || pick1(['tap', 'tap', 'pop', 'bell']));
+  snd(b.dataset.s || pick1(['bubble', 'marimba', 'drop', 'tap']));
 }, true);
 
 /* ================= الصوت المتكلّم ================= */
@@ -501,10 +637,15 @@ const sayBtn = txt => `<button class="say" data-nos onclick="sayThis(this)" data
 function sayThis(b) { if (TTS.btn === b) { stopVoice(); return; } speak(b.dataset.t, b); }
 
 /* ================= التميمة والتأثيرات ================= */
-const MASCOT_SVG = `<svg viewBox="0 0 120 120"><defs><radialGradient id="mg" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#ffd84d"/><stop offset="1" stop-color="#ff9f1a"/></radialGradient><radialGradient id="mc" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ff7aa8"/><stop offset="1" stop-color="#ff7aa8" stop-opacity="0"/></radialGradient></defs>
-<path d="M60 6l14 30 33 4-24 23 6 33-29-16-29 16 6-33L13 40l33-4z" fill="url(#mg)" stroke="#e08a00" stroke-width="3" stroke-linejoin="round"/>
-<g class="blink"><ellipse cx="47" cy="56" rx="6" ry="8" fill="#2b2350"/><ellipse cx="73" cy="56" rx="6" ry="8" fill="#2b2350"/><circle cx="49" cy="53" r="2.2" fill="#fff"/><circle cx="75" cy="53" r="2.2" fill="#fff"/></g>
-<circle cx="38" cy="68" r="7" fill="url(#mc)"/><circle cx="82" cy="68" r="7" fill="url(#mc)"/><path d="M50 70q10 10 20 0" stroke="#2b2350" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`;
+const MASCOT_SVG = `<svg viewBox="0 0 120 120"><defs><radialGradient id="mg" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#fff4d6"/><stop offset=".45" stop-color="#ffb347"/><stop offset="1" stop-color="#f77f00"/></radialGradient><radialGradient id="mc" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ff7aa8"/><stop offset="1" stop-color="#ff7aa8" stop-opacity="0"/></radialGradient></defs>
+<path d="M92 60 L116 40 Q110 60 116 80 Z" fill="#48cae4" stroke="#0077b6" stroke-width="3" stroke-linejoin="round"/>
+<path d="M50 26 Q62 8 76 28 Z" fill="#48cae4" stroke="#0077b6" stroke-width="3" stroke-linejoin="round"/>
+<ellipse cx="56" cy="62" rx="42" ry="34" fill="url(#mg)" stroke="#c75b00" stroke-width="3"/>
+<path d="M66 34 Q74 62 66 90" stroke="#fff" stroke-width="7" fill="none" opacity=".85"/>
+<path d="M50 84 Q58 100 70 88 Z" fill="#48cae4" stroke="#0077b6" stroke-width="2.5"/>
+<g class="blink"><ellipse cx="36" cy="54" rx="7" ry="9" fill="#123a4a"/><circle cx="38.5" cy="50.5" r="2.6" fill="#fff"/></g>
+<circle cx="30" cy="70" r="7" fill="url(#mc)"/><path d="M18 66 q7 8 14 2" stroke="#123a4a" stroke-width="4" fill="none" stroke-linecap="round"/>
+<circle cx="8" cy="40" r="4" fill="#fff" stroke="#48cae4" stroke-width="2"/><circle cx="14" cy="26" r="3" fill="#fff" stroke="#48cae4" stroke-width="2"/></svg>`;
 const PRAISE = ['أَحْسَنْتَ! 👏', 'رَائِع! 🌟', 'مُمْتَاز! 💯', 'بَطَل! 🏆', 'مَا شَاءَ اللّٰه! ✨', 'هَائِل! 🎉'];
 const PRAISE_V = ['أحسنت', 'رائع', 'ممتاز', 'بطل', 'ما شاء الله', 'هائل'];
 const TRY = ['حَاوِلْ مَرَّةً أُخْرَى 💪', 'فَكِّرْ قَلِيلًا 🤔', 'قَرِيبٌ جِدًّا! 🙂'];
@@ -516,13 +657,13 @@ let tT = null;
 function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tT); tT = setTimeout(() => t.classList.remove('on'), 2600); }
 function confetti(n) {
   const box = document.createElement('div'); box.className = 'confetti';
-  const cols = ['#ff5fa2', '#7c4dff', '#ffc93c', '#22c55e', '#1e88e5', '#ff8a00'];
+  const cols = ['#00b4d8', '#f77f00', '#ffd166', '#f15bb5', '#38b000', '#8338ec'];
   for (let i = 0; i < (n || 90); i++) { const p = document.createElement('i'); p.style.left = rnd(0, 100) + '%'; p.style.background = cols[i % cols.length]; p.style.animationDuration = rnd(1.8, 3.4) + 's'; p.style.animationDelay = rnd(0, .6) + 's'; box.appendChild(p); }
   document.body.appendChild(box); setTimeout(() => box.remove(), 4200);
 }
 function burst(el, ch) {
   if (!el) return; const r = el.getBoundingClientRect();
-  for (let i = 0; i < 4; i++) { const b = document.createElement('div'); b.className = 'burst'; b.textContent = ch || pick1(['⭐', '✨', '🌟', '💫']); b.style.left = (r.left + r.width / 2 + rnd(-40, 40) - 20) + 'px'; b.style.top = (r.top + rnd(-10, 20)) + 'px'; b.style.animationDelay = (i * .08) + 's'; document.body.appendChild(b); setTimeout(() => b.remove(), 1200); }
+  for (let i = 0; i < 4; i++) { const b = document.createElement('div'); b.className = 'burst'; b.textContent = ch || pick1(['⭐', '✨', '💎', '🫧', '🐚', '🌟']); b.style.left = (r.left + r.width / 2 + rnd(-40, 40) - 20) + 'px'; b.style.top = (r.top + rnd(-10, 20)) + 'px'; b.style.animationDelay = (i * .08) + 's'; document.body.appendChild(b); setTimeout(() => b.remove(), 1200); }
 }
 
 /* ================= الحالة والتواصل ================= */
@@ -566,11 +707,11 @@ function updateTop() {
 const SCORES = () => { const o = {}; S.st.forEach((s, i) => o['s' + (i + 1)] = s.pts || 0); o.quiz = quizScore(); return o; };
 
 /* ================= التنقل ================= */
-const ORBC = [['#ff8fc2', '#e23d8b', '#a3165b'], ['#7cd3ff', '#1e88e5', '#0d5aa7'], ['#8ef0a8', '#22b455', '#13723a'], ['#ffd36b', '#ff9d00', '#b56a00'], ['#c9a6ff', '#7c4dff', '#4b25b0'], ['#ffa98a', '#ff5a36', '#b02e10']];
+const ORBC = [['#7fe7ff', '#00b4d8', '#0077b6'], ['#ffc38a', '#f77f00', '#a84d00'], ['#ff9ec7', '#f15bb5', '#9b1d6a'], ['#a6f08c', '#38b000', '#1f6b00'], ['#ffe27a', '#ffb703', '#a86a00'], ['#c9b6ff', '#8338ec', '#4a148c']];
 function go(id, silent) {
   stopVoice(); stopGames();
-  if (id.startsWith('s')) { const i = +id.slice(1); if (!unlocked(i)) { toast('🔒 أَكْمِلِ الْمَحَطَّةَ السَّابِقَةَ أَوَّلًا'); snd('bad'); return; } }
-  if (id === 'quiz' && !quizOpen()) { toast('🔒 أَكْمِلْ كُلَّ الْمَحَطَّاتِ أَوَّلًا'); snd('bad'); return; }
+  if (id.startsWith('s')) { const i = +id.slice(1); if (!unlocked(i)) { toast('🔒 أَكْمِلِ الْجَزِيرَةَ السَّابِقَةَ أَوَّلًا'); snd('bad'); return; } }
+  if (id === 'quiz' && !quizOpen()) { toast('🔒 أَكْمِلْ كُلَّ الْجُزُرِ أَوَّلًا'); snd('bad'); return; }
   S.page = id;
   $$('.page').forEach(p => p.classList.remove('on'));
   const pg = $('#page'); pg.innerHTML = ''; pg.classList.add('on');
@@ -584,19 +725,39 @@ function go(id, silent) {
 }
 
 function renderMap(pg) {
-  const nodes = L.stations.map((st, i) => {
+  const SCN = ['🏝️', '🌋', '🏖️', '⛰️', '🌴', '🗿'];
+  const cards = L.stations.map((st, i) => {
     const c = ORBC[i % ORBC.length], s = S.st[i] || {}, lk = !unlocked(i), cur = !lk && !s.done;
-    return `<div class="node ${lk ? 'locked' : ''} ${cur ? 'cur' : ''}" onclick="go('s${i}')">
-      <div class="orb" style="--oc:${c[0]};--od:${c[1]};--os:${c[2]};animation-delay:${i * .3}s">${st.icon}<span class="num">${ARN(i + 1)}</span></div>
-      <div class="lbl">${esc(st.title)}<small>${s.done ? starStr(s.pts, PER) : lk ? '' : '▶ اِبْدَأْ'}</small></div></div>`;
+    return `<div class="isle ${lk ? 'locked' : ''} ${cur ? 'cur' : ''} ${s.done ? 'done' : ''}" data-i="${i}" style="--c1:${c[0]};--c2:${c[1]};--c3:${c[2]}">
+      <div class="sea"><span class="sun3"></span><span class="land">${SCN[i % SCN.length]}</span><span class="ico">${st.icon}</span><span class="wave"></span>${lk ? '<span class="lock">🔒</span>' : ''}${s.done ? '<span class="flag">🚩</span>' : ''}</div>
+      <div class="info"><div class="no">الْجَزِيرَةُ ${ARN(i + 1)}</div><h3>${esc(st.title)}</h3><div class="stars">${s.done ? starStr(s.pts, PER) : '☆☆☆'}</div>
+      <button class="btn3d ${lk ? '' : 'orange'}" onclick="go('s${i}')">${lk ? '🔒 مُغْلَقَةٌ' : s.done ? '🔁 أَزُورُهَا ثَانِيَةً' : '⛵ أَبْحِرْ إِلَيْهَا'}</button></div></div>`;
   }).join('');
   const qd = S.quiz.done, ql = !quizOpen();
-  pg.innerHTML = `<div class="hero"><div class="big">${L.hero || L.icon}</div><div><h2>${esc(L.title)} ${sayBtn(L.title)}</h2><p>${esc(L.sub || 'هَيَّا نَتَعَلَّمُ وَنَلْعَبُ!')}</p></div></div>
-    <div class="map">${nodes}
-      <div class="node ${ql ? 'locked' : ''} ${!ql && !qd ? 'cur' : ''}" onclick="go('quiz')"><div class="orb" style="--oc:#fff1a8;--od:#ffbf00;--os:#b07d00">🎁<span class="num">⭐</span></div><div class="lbl">اِخْتِبَارُ الْأَبْطَالِ<small>${qd ? starStr(quizScore(), 10) : ql ? '' : '▶ اِبْدَأْ'}</small></div></div>
-    </div>
+  const chest = `<div class="isle chest ${ql ? 'locked' : ''} ${!ql && !qd ? 'cur' : ''}" data-i="${NS}"><div class="sea"><span class="sun3"></span><span class="land">💰</span><span class="ico">💎</span><span class="wave"></span>${ql ? '<span class="lock">🔒</span>' : ''}</div>
+      <div class="info"><div class="no">الْكَنْزُ الْأَخِيرُ</div><h3>صُنْدُوقُ الْكَنْزِ</h3><div class="stars">${qd ? starStr(quizScore(), 10) : '☆☆☆'}</div>
+      <button class="btn3d ${ql ? '' : 'pink'}" onclick="go('quiz')">${ql ? '🔒 أَكْمِلْ كُلَّ الْجُزُرِ' : '💎 اِفْتَحِ الصُّنْدُوقَ'}</button></div></div>`;
+  pg.innerHTML = `<div class="banner3"><div class="rope"></div><div class="board"><span class="big">${L.hero || L.icon}</span><div><h2>${esc(L.title)} ${sayBtn(L.title)}</h2><p>${esc(L.sub || '')}</p></div></div></div>
+    <div class="compass">${L.stations.map((st, i) => `<button class="cp ${S.st[i] && S.st[i].done ? 'ok' : ''}" data-nos data-k="${i}">${ARN(i + 1)}</button>`).join('')}<button class="cp" data-nos data-k="${NS}">💎</button></div>
+    <div class="flowwrap"><button class="arr prev" data-s="drop">‹</button><div class="isles" id="isles">${cards}${chest}</div><button class="arr next" data-s="drop">›</button></div>
+    <p class="swipe">👆 اِسْحَبْ يَمِينًا وَيَسَارًا لِتَرَى الْجُزُرَ</p>
     ${free() ? `<div class="row"><button class="btn3d blue" onclick="go('guide')">📘 دليل المعلم</button></div>` : ''}`;
-  if (!silent0) { silent0 = true; setTimeout(() => mascot('أَهْلًا يَا بَطَل! 👋 اِضْغَطْ عَلَى الْمَحَطَّةِ', 2600), 500); }
+  const box = $('#isles'), items = $$('#isles .isle');
+  const fx = () => {
+    const r = box.getBoundingClientRect(), cx = r.left + r.width / 2; let best = 0, bd = 1e9;
+    items.forEach((el, k) => { const b = el.getBoundingClientRect(), d = (b.left + b.width / 2 - cx) / r.width;
+      el.style.transform = `perspective(900px) rotateY(${Math.max(-1, Math.min(1, d)) * -38}deg) scale(${1 - Math.min(Math.abs(d), 1) * .18})`;
+      el.style.opacity = 1 - Math.min(Math.abs(d), 1) * .35; if (Math.abs(d) < bd) { bd = Math.abs(d); best = k; } });
+    $$('.compass .cp').forEach((b, k) => b.classList.toggle('on', k === best));
+  };
+  const to = k => { const el = items[Math.max(0, Math.min(items.length - 1, k))]; if (el) box.scrollTo({left:el.offsetLeft - (box.clientWidth - el.clientWidth) / 2, behavior:'smooth'}); };
+  box.addEventListener('scroll', () => requestAnimationFrame(fx), {passive:true});
+  $$('.compass .cp').forEach(b => b.onclick = () => { snd('bubble'); to(+b.dataset.k); });
+  const curK = () => { const c = $$('#isles .isle'); let k = c.findIndex(e => e.classList.contains('cur')); return k < 0 ? 0 : k; };
+  const center = () => { const r = box.getBoundingClientRect(); let k = 0, bd = 1e9; items.forEach((el, j) => { const b = el.getBoundingClientRect(), d = Math.abs(b.left + b.width / 2 - r.left - r.width / 2); if (d < bd) { bd = d; k = j; } }); return k; };
+  $('.arr.prev').onclick = () => to(center() + 1); $('.arr.next').onclick = () => to(center() - 1);
+  setTimeout(() => { const el = items[curK()]; box.scrollLeft = el.offsetLeft - (box.clientWidth - el.clientWidth) / 2; fx(); }, 30);
+  if (!silent0) { silent0 = true; setTimeout(() => mascot('أَهْلًا يَا صَيَّادَ الْكُنُوزِ! 🏝️ اِخْتَرْ جَزِيرَتَكَ', 2600), 500); }
 }
 let silent0 = false;
 const starStr = (p, m) => { const n = Math.round((p || 0) / m * 3); return '⭐'.repeat(n) + '☆'.repeat(3 - n); };
@@ -605,10 +766,12 @@ const starStr = (p, m) => { const n = Math.round((p || 0) / m * 3); return '⭐'
 function renderStation(pg, i) {
   const st = L.stations[i], blocks = st.learn || [];
   const state = {i, step:0};
-  pg.innerHTML = `<div class="stagehead"><div class="t">${st.icon} ${esc(st.title)}</div></div><div id="stBody"></div>`;
+  pg.innerHTML = `<div class="stagehead"><div class="t">${st.icon} ${esc(st.title)}</div></div><div class="trail" id="stSteps"></div><div id="stBody"></div>`;
   const body = $('#stBody');
   const showStep = () => {
     stopVoice(); stopGames();
+    const nS = blocks.length + 1, ss = $('#stSteps');
+    if (ss) ss.innerHTML = Array.from({length:nS}, (_, k) => `<span class="${k < state.step ? 'ok' : k === state.step ? 'on' : ''}">${k < state.step ? '👣' : k === state.step ? '🧭' : k === nS - 1 ? '🏁' : '•'}</span>`).join('<i></i>');
     if (state.step < blocks.length) {
       body.innerHTML = `<div class="panel" id="blk"></div><div class="row" style="margin-top:18px">
         ${state.step > 0 ? `<button class="btn3d blue" id="prevB">⬅️ رُجُوع</button>` : ''}
@@ -633,7 +796,7 @@ function finishStation(i, c, n) {
   gb.innerHTML = `<div class="finish"><div class="stars">${[0, 1, 2].map(j => `<span style="animation-delay:${j * .2}s">${j < k ? '⭐' : '☆'}</span>`).join('')}</div>
     <h3>${k >= 3 ? 'مُمْتَاز يَا بَطَل! 🏆' : k === 2 ? 'أَحْسَنْتَ! 👏' : 'جَيِّد، وَتَتَحَسَّنُ أَكْثَرَ! 💪'}</h3>
     <div style="font-size:24px;font-weight:800">نُجُومُكَ: ${fr(s.pts, PER)}</div>
-    <div class="row" style="margin-top:16px">${i + 1 < NS ? `<button class="btn3d pink big" onclick="go('s${i + 1}')">الْمَحَطَّةُ التَّالِيَةُ ➡️</button>` : `<button class="btn3d orange big" onclick="go('quiz')">🎁 اِخْتِبَارُ الْأَبْطَالِ</button>`}
+    <div class="row" style="margin-top:16px">${i + 1 < NS ? `<button class="btn3d pink big" onclick="go('s${i + 1}')">الْجَزِيرَةُ التَّالِيَةُ ⛵</button>` : `<button class="btn3d orange big" onclick="go('quiz')">💎 صُنْدُوقُ الْكَنْزِ</button>`}
     <button class="btn3d blue" onclick="go('map')">🗺️ الْخَرِيطَة</button><button class="btn3d" onclick="go('s${i}')">🔁 أُعِيدُ</button></div></div>`;
   speak(k >= 3 ? 'ممتاز يا بطل' : 'أحسنت');
 }
@@ -665,7 +828,7 @@ function renderBlock(box, b) {
   }
   if (b.html) { box.innerHTML = b.html; return; }
 }
-const PAL = ['#ffd1e6', '#cfe9ff', '#d4f8dc', '#fff0b8', '#e6dcff', '#ffe0cf'];
+const PAL = ['#bff3ff', '#ffe0c2', '#ffd6ea', '#d9f7cf', '#fff0a8', '#e2d9ff'];
 
 /* ================= المشهد الكرتوني ================= */
 const CINE = {run:false, k:0, timer:null};
@@ -783,8 +946,9 @@ const GAMES = {
       `<div class="slots">${items.map((_, j) => `<div class="slot" id="sl${j}"><b>${ARN(j + 1)}</b></div>`).join('')}</div><div class="opts">${mix.map(o => `<button class="opt" data-i="${o.i}">${o.e ? `<span class="e">${o.e}</span>` : ''}<span class="t">${o.t}</span></button>`).join('')}</div>`;
     $$('.panel .opt').forEach(b => b.onclick = () => {
       const i = +b.dataset.i;
-      if (i === k) {
-        const it = items[i], s = $('#sl' + k); s.classList.add('full'); s.innerHTML = `${it.e ? `<span class="e">${it.e}</span>` : ''}${it.t}`;
+      if (b.classList.contains('ok')) return;
+      if (i === k || (items[i].t === items[k].t && (items[i].e || '') === (items[k].e || ''))) {
+        const it = items[k], s = $('#sl' + k); s.classList.add('full'); s.innerHTML = `${it.e ? `<span class="e">${it.e}</span>` : ''}${it.t}`;
         b.classList.add('ok'); setTimeout(() => b.classList.add('dim'), 300); snd('ok'); burst(s); k++;
         if (k === items.length) { praise(); G.timers.push(setTimeout(() => done(Math.max(0, items.length - err), items.length), 900)); }
       } else { err++; b.classList.remove('no'); void b.offsetWidth; b.classList.add('no'); snd('bad'); encourage(); }
@@ -855,7 +1019,7 @@ const GAMES = {
 /* ================= الاختبار ================= */
 function renderQuiz(pg) {
   const Q = L.quiz;
-  pg.innerHTML = `<div class="stagehead"><div class="t">🎁 اِخْتِبَارُ الْأَبْطَالِ</div></div><div class="panel" id="qbox"></div>`;
+  pg.innerHTML = `<div class="stagehead"><div class="t">💎 صُنْدُوقُ الْكَنْزِ</div></div><div class="panel" id="qbox"></div>`;
   const box = $('#qbox');
   const draw = () => {
     const k = S.quiz.ans.length;
@@ -880,7 +1044,7 @@ function results(box) {
   box.innerHTML = `<div class="finish"><div class="stars">${[0, 1, 2].map(j => `<span style="animation-delay:${j * .2}s">${j < k ? '⭐' : '☆'}</span>`).join('')}</div>
     <h3>${k === 3 ? 'أَنْتَ بَطَلٌ رَائِعٌ! 🏆' : k === 2 ? 'أَحْسَنْتَ يَا بَطَل! 👏' : 'أَحْسَنْتَ! وَاصِلِ التَّعَلُّمَ 💪'}</h3>
     <div style="font-size:44px;font-weight:800;color:#7c4dff">${fr(t, 50)}</div></div>
-    <table class="restable">${L.stations.map((s, i) => `<tr><td>${s.icon} ${esc(s.title)}</td><td>${fr(S.st[i].pts || 0, PER)}</td></tr>`).join('')}<tr><td>🎁 اِخْتِبَارُ الْأَبْطَالِ</td><td>${fr(quizScore(), 10)}</td></tr></table>
+    <table class="restable">${L.stations.map((s, i) => `<tr><td>${s.icon} ${esc(s.title)}</td><td>${fr(S.st[i].pts || 0, PER)}</td></tr>`).join('')}<tr><td>💎 صُنْدُوقُ الْكَنْزِ</td><td>${fr(quizScore(), 10)}</td></tr></table>
     <div style="margin-top:16px" id="sendBox">${S.sent ? `<div class="sent">${S.sent.preview ? '👁 معاينة: الإرسال يعمل' : `✅ وَصَلَتْ نَتِيجَتُكَ إِلَى الْمُعَلِّمِ`} · ${fr(S.sent.auto, 50)}</div>`
       : `<div class="row"><button class="btn3d green big" id="sendBtn" onclick="sendResult()" data-s="whistle">✉️ أَرْسِلْ نَتِيجَتِي إِلَى الْمُعَلِّمِ</button></div>`}</div>`;
   if (!results.shown) { results.shown = true; snd('win'); confetti(140); speak(k === 3 ? 'أنت بطل رائع' : 'أحسنت يا بطل'); }
