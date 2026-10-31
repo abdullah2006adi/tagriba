@@ -1194,15 +1194,15 @@ G52.reg('maze', {name:'المتاهة', icon:'🌀', form:'mcq', render(ctx) {
 
 /* 8) رماية الأرقام (صيغة num): الأرقام تطير، أصب أرقام الجواب بالترتيب */
 G52.reg('calc', {name:'رماية الأرقام', icon:'🔢', form:'num', render(ctx) {
-  head(ctx, '🔢', 'رماية الأرقام', 'الأرقام تتطاير في الشاشة! أصب أرقام الجواب واحدًا تلو الآخر من اليسار إلى اليمين (اضغط عليها). ⌫ للتراجع.');
-  const L = ctx.lvl, S = G52.stage(ctx, {w:380, h:440}); const R = U.shuffle(ctx.cfg.nums).slice(0, 5); let k = 0, c = 0, first = true, val = '', balls = [], wait = 0; const res = [];
+  head(ctx, '🔢', 'رماية الأرقام', 'الأرقام تتطاير في الشاشة! أصب أرقام الجواب واحدًا تلو الآخر من اليسار إلى اليمين (اضغط عليها). ⌫ للتراجع. للعبة وقت محدد: إذا انتهى تُحتسب الإجابات الصحيحة التي أنجزتها.');
+  const L = ctx.lvl, S = G52.stage(ctx, {w:380, h:440}); const R = U.shuffle(ctx.cfg.nums).slice(0, 5); let k = 0, c = 0, first = true, val = '', balls = [], wait = 0, tl = R.length * [30, 26, 22, 20][L], over = false; const res = [];
   const qb = document.createElement('div'); ctx.host.insertBefore(qb, S.box); ctx.__Qb = () => R[k] ? U.plain(R[k].q) : '';
   const draw = () => { qb.innerHTML = ctx.dots(R.length, k, res) + `<div class="g2-qmini">${ctx.api.sayBtn(U.plain(R[k].q))}</div>`; };
   const spawn = () => { balls = [...'0123456789'].map(d => ({d, x:U.rnd(30, 350), y:U.rnd(80, 380), vx:(Math.random() < .5 ? -1 : 1) * U.rnd(.6, 1) * [65, 95, 130, 165][L], vy:(Math.random() < .5 ? -1 : 1) * U.rnd(.6, 1) * [65, 95, 130, 165][L], r:[26, 23, 21, 19][L]})); };
-  const check = () => { const ans = String(R[k].ans); if (val.length < ans.length) return; if (val === ans) { SN().ding(); if (first) c++; res[k] = first; ctx.api.sfx('ok'); ctx.api.praise(); S.burst(190, 30, ['#fde047', '#22c55e'], 30); wait = 1; ctx.after(900, () => { k++; val = ''; if (k >= R.length) { ctx.after(400, () => ctx.done(c / R.length)); return; } first = true; draw(); spawn(); }); } else { first = false; ctx.api.sfx('bad'); ctx.api.encourage(); S.shake = 6; val = ''; } };
-  S.onDown = p => { if (wait > 0 || k >= R.length) return; if (p.y < 52 && p.x < 70) { val = val.slice(0, -1); return; } const b = balls.find(b => Math.hypot(p.x - b.x, p.y - b.y) < b.r + 6); if (b) { val += b.d; SN().pop(); S.burst(b.x, b.y, '#38bdf8', 12); b.x = U.rnd(30, 350); b.y = U.rnd(100, 380); check(); } };
+  const check = () => { if (over) return; const ans = String(R[k].ans); if (val.length < ans.length) return; if (val === ans) { SN().ding(); if (first) c++; res[k] = first; ctx.api.sfx('ok'); ctx.api.praise(); S.burst(190, 30, ['#fde047', '#22c55e'], 30); wait = 1; ctx.after(900, () => { k++; val = ''; if (k >= R.length) { over = true; ctx.after(400, () => ctx.done(c / R.length)); return; } first = true; draw(); spawn(); }); } else { first = false; ctx.api.sfx('bad'); ctx.api.encourage(); S.shake = 6; val = ''; } };
+  S.onDown = p => { if (wait > 0 || k >= R.length || over) return; if (p.y < 52 && p.x < 70) { val = val.slice(0, -1); return; } const b = balls.find(b => Math.hypot(p.x - b.x, p.y - b.y) < b.r + 6); if (b) { val += b.d; SN().pop(); S.burst(b.x, b.y, '#38bdf8', 12); b.x = U.rnd(30, 350); b.y = U.rnd(100, 380); check(); } };
   S.run(dt => {
-    if (wait > 0) wait -= dt; S.clear('#0c4a6e'); S.rr(10, 8, 360, 44, 12, '#ecfccb'); S.text(val ? U.arn(val) : '…', 210, 31, {sz:26, col:'#1f2937'}); S.rr(16, 14, 50, 32, 8, '#fecaca'); S.text('⌫', 41, 31, {sz:18, col:'#7f1d1d'});
+    if (wait > 0) wait -= dt; if (!over) { tl -= dt; if (tl <= 0) { over = true; SN().buzz(); S.float('انتهى الوقت!', 190, 220, '#fde047'); ctx.after(1400, () => ctx.done(c / R.length)); } } S.clear('#0c4a6e'); S.rr(10, 8, 360, 44, 12, '#ecfccb'); S.text(val ? U.arn(val) : '…', 210, 31, {sz:26, col:'#1f2937'}); S.rr(16, 14, 50, 32, 8, '#fecaca'); S.text('⌫', 41, 31, {sz:18, col:'#7f1d1d'}); S.rr(300, 62, 72, 24, 12, tl < 15 ? '#dc2626' : '#0009'); S.text('⏱ ' + U.arn(Math.max(0, Math.ceil(tl))), 336, 74, {sz:13});
     balls.forEach(b => { b.x += b.vx * dt; b.y += b.vy * dt; if (b.x < b.r || b.x > 380 - b.r) b.vx *= -1; if (b.y < 60 + b.r || b.y > 440 - b.r) b.vy *= -1; b.x = U.clamp(b.x, b.r, 380 - b.r); b.y = U.clamp(b.y, 60 + b.r, 440 - b.r); S.circle(b.x, b.y, b.r, '#f8fafc', '#38bdf8', 3); S.text(U.arn(b.d), b.x, b.y + 1, {sz:b.r, col:'#0c4a6e'}); });
     S.fx(dt);
   });
@@ -1643,12 +1643,14 @@ G52.reg('tetris', {name:'التتريس', icon:'🟦', form:'seq', render(ctx) {
 
 /* 4) رمي الحلقات ثلاثي الأبعاد بمنظور الشخص الأول */
 G52.reg('ringtoss', {name:'رمي الحلقات', icon:'⭕', form:'seq', render(ctx) {
-  head(ctx, '⭕', 'رمي الحلقات', 'أنت تمسك الحلقة! حرّك إصبعك/الفأرة يمينًا ويسارًا لتدير نظرك نحو العمود (أو ⬅➡)، ثم اضغط مطوّلًا لشحن قوة الرمية وأفلت لترميها على عمود العنصر التالي في الترتيب.');
+  head(ctx, '⭕', 'رمي الحلقات', 'أنت تمسك الحلقة! حرّك إصبعك/الفأرة يمينًا ويسارًا لتدير نظرك نحو العمود (أو ⬅➡)، ثم اضغط مطوّلًا لشحن قوة الرمية: حين يتلوّن العمود بالأخضر فهذه لحظة الإصابة، أفلت عندها لترمي الحلقة على عمود العنصر التالي في الترتيب.');
   const L = ctx.lvl, Q = G52.sq(ctx); ctx.__Q = Q; const up = need(ctx, Q); const S = G52.stage(ctx, {w:420, h:460, pad:['left', 'fire', 'right']});
   const W = 420, H = 460, HZ = 170, F = 330, CH = 1.5; let yaw = 0, yawT = 0, pow = 0, pdir = 1, charging = false, ring = null, rings = [], tossT = 0;
   const n = Q.I.length; const pegs = U.shuffle(Q.I).map((it, i) => { const row = i % 2, k = Math.floor(i / 2), cols = Math.ceil(n / 2); return {it, x:(k - (cols - 1) / 2) * 1.25 + (row ? .6 : 0) + U.rnd(-.15, .15), z:3.2 + row * 1.6 + U.rnd(-.2, .2)}; });
   const P = (x, y, z) => { const c = Math.cos(yaw), s2 = Math.sin(yaw), xr = x * c - z * s2, zr = x * s2 + z * c; if (zr < .2) return null; return {x:W / 2 + F * xr / zr, y:HZ - F * (y - CH) / zr, s:F / zr, z:zr}; };
   const tol = [.32, .26, .21, .17][L];
+  const predict = pw => { const v = 4.5 + pw * 6.5, el = .62; let x = .35, y = 1.25, z = .4, vx = Math.sin(yaw) * v * Math.cos(el), vz = Math.cos(yaw) * v * Math.cos(el), vy = v * Math.sin(el); for (let i = 0; i < 400; i++) { const d = .005; vy -= 9.8 * d; x += vx * d; y += vy * d; z += vz * d; if (vy < 0 && y < .75 && y > .4) { const p = pegs.find(p => Math.hypot(p.x - x, p.z - z) < tol); if (p) return p; } if (y <= 0) return null; } return null; };
+  let aimP = null, lastAim = null;
   const fire = () => { if (ring || Q.over) return; const v = 4.5 + pow * 6.5, el = .62; ring = {x:.35, y:1.25, z:.4, vx:Math.sin(yaw) * v * Math.cos(el), vz:Math.cos(yaw) * v * Math.cos(el), vy:v * Math.sin(el), t:0, spin:0}; pow = 0; SN().whoosh(.2); tossT = .3; };
   S.onMove = p => { yawT = U.clamp((p.x - W / 2) / (W / 2), -1, 1) * .75; };
   S.onDown = p => { S.onMove(p); if (!ring && !Q.over) { charging = true; pow = 0; pdir = 1; } }; S.onUp = () => { if (charging) { charging = false; fire(); } };
@@ -1657,6 +1659,7 @@ G52.reg('ringtoss', {name:'رمي الحلقات', icon:'⭕', form:'seq', rende
   S.run(dt => {
     if (S.keys.has('left')) yawT = Math.max(-.75, yawT - dt * .9); if (S.keys.has('right')) yawT = Math.min(.75, yawT + dt * .9); yaw += (yawT - yaw) * Math.min(1, dt * 6);
     if (charging) { pow += pdir * dt * [.8, .95, 1.1, 1.3][L]; if (pow > 1) { pow = 1; pdir = -1; } if (pow < 0) { pow = 0; pdir = 1; } }
+    aimP = !ring && !Q.over && charging ? predict(pow) : null; if (aimP && aimP !== lastAim) SN().tick(); lastAim = aimP;
     // السماء والجدار والأرض
     const sk = S.c.createLinearGradient(0, 0, 0, HZ); sk.addColorStop(0, '#fca5a5'); sk.addColorStop(1, '#fde68a'); S.clear(); S.c.fillStyle = sk; S.c.fillRect(0, 0, W, HZ + 2);
     for (let i = -6; i <= 6; i++) { const b = P(i * 3, 3.2, 14); const b2 = P(i * 3 + 2.6, 3.2, 14); if (b && b2) { S.c.fillStyle = ['#ef4444', '#f8fafc'][(i + 20) % 2]; S.c.beginPath(); S.c.moveTo(b.x, b.y); S.c.lineTo(b2.x, b2.y); const c1 = P(i * 3 + 2.6, 2.6, 14), c0 = P(i * 3, 2.6, 14); S.c.lineTo(c1.x, c1.y); S.c.lineTo(c0.x, c0.y); S.c.fill(); } }
@@ -1664,7 +1667,7 @@ G52.reg('ringtoss', {name:'رمي الحلقات', icon:'⭕', form:'seq', rende
     S.c.strokeStyle = '#78350f88'; S.c.lineWidth = 1; for (let x = -8; x <= 8; x += .8) { const a = P(x, 0, .6), b = P(x, 0, 16); if (a && b) { S.c.beginPath(); S.c.moveTo(a.x, a.y); S.c.lineTo(b.x, b.y); S.c.stroke(); } } for (let z = 1; z <= 16; z += 1.5) { const a = P(-8, 0, z), b = P(8, 0, z); if (a && b) { S.c.beginPath(); S.c.moveTo(a.x, a.y); S.c.lineTo(b.x, b.y); S.c.stroke(); } }
     // الأعمدة (الأبعد أولًا)
     const draws = pegs.map(p => ({z:P(p.x, 0, p.z) ? P(p.x, 0, p.z).z : 99, f:() => { const b = P(p.x, 0, p.z), t = P(p.x, .7, p.z); if (!b || !t) return; S.c.fillStyle = '#0004'; S.c.beginPath(); S.c.ellipse(b.x, b.y, b.s * .22, b.s * .07, 0, 0, 6.283); S.c.fill(); S.c.fillStyle = '#57534e'; S.c.beginPath(); S.c.ellipse(b.x, b.y, b.s * .16, b.s * .05, 0, 0, 6.283); S.c.fill();
-        const w = Math.max(3, b.s * .05); const pg = S.c.createLinearGradient(b.x - w, 0, b.x + w, 0); pg.addColorStop(0, '#78350f'); pg.addColorStop(.5, '#d97706'); pg.addColorStop(1, '#78350f'); S.c.fillStyle = pg; S.c.fillRect(b.x - w / 2, t.y, w, b.y - t.y); S.circle(t.x, t.y, w * .6, '#b45309');
+        const w = Math.max(3, b.s * .05); const pg = S.c.createLinearGradient(b.x - w, 0, b.x + w, 0); pg.addColorStop(0, '#78350f'); pg.addColorStop(.5, '#d97706'); pg.addColorStop(1, '#78350f'); const hot = aimP === p; if (hot) { S.c.fillStyle = '#22c55e55'; S.c.beginPath(); S.c.ellipse(b.x, b.y, b.s * .3, b.s * .1, 0, 0, 6.283); S.c.fill(); S.c.shadowColor = '#4ade80'; S.c.shadowBlur = 18; } S.c.fillStyle = hot ? '#22c55e' : pg; S.c.fillRect(b.x - w / 2, t.y, w, b.y - t.y); S.circle(t.x, t.y, w * .6, hot ? '#86efac' : '#b45309'); S.c.shadowBlur = 0;
         rings.filter(r => r.p === p).forEach(r => { const q = P(p.x, r.y, p.z); S.c.strokeStyle = r.ok ? '#16a34a' : '#ef4444'; S.c.lineWidth = Math.max(2, q.s * .04); S.c.beginPath(); S.c.ellipse(q.x, q.y, q.s * .2, q.s * .06, 0, 0, 6.283); S.c.stroke(); });
         S.card(T(p.it), t.x, t.y - 14 - Math.min(40, b.s * .05), {sz:Math.max(9, Math.min(13, b.s * .028)), maxW:Math.max(70, b.s * .25), e:E(p.it)}); }}));
     // الحلقة الطائرة
@@ -1681,7 +1684,7 @@ G52.reg('ringtoss', {name:'رمي الحلقات', icon:'⭕', form:'seq', rende
     S.c.fillStyle = '#f2c094'; S.c.strokeStyle = '#b97d4f'; S.c.lineWidth = 2; S.c.beginPath(); S.c.moveTo(hx - 20, hy - 30); S.c.quadraticCurveTo(hx - 34, hy - 22, hx - 30, hy - 6); S.c.quadraticCurveTo(hx - 10, hy + 6, hx + 10, hy - 4); S.c.lineTo(hx + 60, hy + 60); S.c.lineTo(hx + 120, hy + 60); S.c.lineTo(hx + 50, hy - 30); S.c.quadraticCurveTo(hx + 20, hy - 46, hx - 20, hy - 30); S.c.fill(); S.c.stroke();
     [0, 1, 2].forEach(i => { S.rr(hx - 22 + i * 13, hy - 46 + i * 2, 12, 26, 6, '#f2c094', '#b97d4f', 2); }); S.rr(hx - 34, hy - 22, 22, 13, 6, '#f2c094', '#b97d4f', 2);
     S.c.fillStyle = '#2563eb'; S.c.beginPath(); S.c.moveTo(hx + 40, hy + 30); S.c.lineTo(hx + 120, hy + 30); S.c.lineTo(hx + 130, hy + 70); S.c.lineTo(hx + 50, hy + 70); S.c.fill();
-    S.rr(14, H - 30, 150, 14, 7, '#0006'); S.rr(14, H - 30, 150 * pow, 14, 7, pow > .75 ? '#dc2626' : '#f59e0b'); S.text(charging ? 'أفلِت للرمي' : 'اضغط مطوّلًا للقوة', 230, H - 23, {sz:12, col:'#fff', stroke:'#0008'});
+    S.rr(14, H - 30, 150, 14, 7, '#0006'); S.rr(14, H - 30, 150 * pow, 14, 7, pow > .75 ? '#dc2626' : '#f59e0b'); S.text(charging ? (aimP ? '🟢 أفلِت الآن: ستصيب «' + T(aimP.it).slice(0, 18) + '»' : 'العمود يخضرّ لحظة الإصابة…') : 'اضغط مطوّلًا للقوة', 250, H - 23, {sz:12, col:aimP ? '#bbf7d0' : '#fff', stroke:'#0008'});
     shelf(S, Q, 6); S.fx(dt);
   });
 }, solve(ctx) { ctx.every(400, () => ctx.__R && ctx.__R()); }});
