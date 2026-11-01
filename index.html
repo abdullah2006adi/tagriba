@@ -377,6 +377,7 @@
 .g2-fs.land .g2-mq:not(:has(.g2-legend)){display:none}
 .g2-fs.land .g2-box{order:1;flex:1 1 auto}
 .g2-fs.land.rot{inset:auto;top:0;left:0;width:100vh;height:100vw;width:100dvh;height:100dvw;transform:rotate(90deg) translateY(-100%);transform-origin:0 0}
+.g2-fs{font-size:112%}
 
 body{font-family:system-ui,'Segoe UI',Tahoma,sans-serif;margin:0;background:#f5f3ff;color:#1f2a44}
 header{background:linear-gradient(135deg,#7c3aed,#0ea5e9);color:#fff;padding:16px;text-align:center}header h1{margin:0;font-size:1.4em}header p{margin:6px 0 0;opacity:.9;font-size:.95em}
@@ -523,6 +524,7 @@ const {U} = G52;
 const COL = ['#ef4444', '#2563eb', '#16a34a', '#d97706', '#9333ea', '#0891b2'], LET = ['أ', 'ب', 'ج', 'د', 'هـ', 'و'];
 G52.COL = COL; G52.LET = LET;
 /* ارتفاع منطقة اللعب العمودية التي تملأ 9:16 مع شريط سؤال ضيّق */
+G52.FS = 1.15; /* تكبير خط الألعاب */
 G52.PH = (w, foot) => Math.round(w * 16 / 9) - 72 - (foot || 0);
 const txt = o => U.plain(U.O(o).t || '').replace(/[ً-ْٰ]/g, m => m); // نُبقي التشكيل
 G52.T = o => U.plain(U.O(o).t || '');
@@ -577,12 +579,12 @@ G52.stage = function (ctx, o) {
   S.circle = (x, y, r, fill, stroke, lw) => { c.beginPath(); c.arc(x, y, r, 0, Math.PI * 2); if (fill) { c.fillStyle = fill; c.fill(); } if (stroke) { c.lineWidth = lw || 2; c.strokeStyle = stroke; c.stroke(); } };
   S.font = (sz, wt) => `${wt || 700} ${sz}px system-ui, "Segoe UI", Tahoma, sans-serif`;
   S.wrap = (s, maxW, sz, wt) => { c.font = S.font(sz, wt); const words = String(s).split(/\s+/), L = []; let cur = ''; words.forEach(w => { const t = cur ? cur + ' ' + w : w; if (c.measureText(t).width > maxW && cur) { L.push(cur); cur = w; } else cur = t; }); if (cur) L.push(cur); return L; };
-  S.text = (s, x, y, op) => { op = Object.assign({sz:16, col:'#fff', wt:700, al:'center', bl:'middle', maxW:0, lh:1.2, stroke:null, max:3}, op); c.font = S.font(op.sz, op.wt); c.direction = 'rtl'; c.textAlign = op.al; c.textBaseline = op.bl;
+  S.text = (s, x, y, op) => { op = Object.assign({sz:16, col:'#fff', wt:700, al:'center', bl:'middle', maxW:0, lh:1.2, stroke:null, max:3}, op); op.sz *= G52.FS; c.font = S.font(op.sz, op.wt); c.direction = 'rtl'; c.textAlign = op.al; c.textBaseline = op.bl;
     let L = op.maxW ? S.wrap(s, op.maxW, op.sz, op.wt) : [String(s)]; if (L.length > op.max) { L = L.slice(0, op.max); L[op.max - 1] += '…'; }
     const y0 = y - (L.length - 1) * op.sz * op.lh / 2; L.forEach((l, i) => { if (op.stroke) { c.lineWidth = 4; c.strokeStyle = op.stroke; c.strokeText(l, x, y0 + i * op.sz * op.lh); } c.fillStyle = op.col; c.fillText(l, x, y0 + i * op.sz * op.lh); }); return L.length; };
   S.emoji = (e, x, y, sz) => { c.font = `${sz}px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(e, x, y); };
   /* بطاقة نص: تعيد أبعادها */
-  S.measure = (s, maxW, sz) => { const L = S.wrap(s, maxW, sz); c.font = S.font(sz); const w = Math.min(maxW, Math.max(...L.map(l => c.measureText(l).width))); return {w:w + 16, h:L.length * sz * 1.2 + 10, L}; };
+  S.measure = (s, maxW, sz) => { sz *= G52.FS; const L = S.wrap(s, maxW, sz); c.font = S.font(sz); const w = Math.min(maxW, Math.max(...L.map(l => c.measureText(l).width))); return {w:w + 16, h:L.length * sz * 1.2 + 10, L}; };
   S.card = (s, x, y, op) => { op = Object.assign({sz:14, maxW:120, bg:'#fff', fg:'#1f2937', bd:null, e:null}, op); const m = S.measure(s, op.maxW, op.sz); const eh = op.e ? op.sz * 1.6 : 0, w = Math.max(m.w, eh ? op.sz * 2 : 0), h = m.h + eh;
     S.rr(x - w / 2, y - h / 2, w, h, 10, op.bg, op.bd, 3); if (op.e) S.emoji(op.e, x, y - h / 2 + eh / 2 + 4, op.sz * 1.3); S.text(s, x, y + eh / 2, {sz:op.sz, col:op.fg, maxW:op.maxW, max:4}); return {x:x - w / 2, y:y - h / 2, w, h}; };
   /* جسيمات */
@@ -598,12 +600,12 @@ G52.stage = function (ctx, o) {
     playT(); };
   /* ===== شريط السؤال العمودي: النقاط + السؤال + مفتاح الألوان ===== */
   const bInfo = () => { const M = ctx.__M; const t = (S.banner && S.banner()) || ''; if (!M) return {t, L:[]}; const r = M.shown; const L = r && !M.isShort(r) ? M.opts(r).map(x => Object.assign(x, {mk:M.marks[x.j]})) : []; return {t, L, dots:{n:M.R.length, k:M.k, res:M.res}, tries:M.tries, tmax:M.tmax}; };
-  const lgCols = (L) => { c.font = S.font(14); const half = (W - 24) / 2 - 40; return L.every(x => c.measureText((x.e ? x.e + ' ' : '') + x.t).width <= half) && L.length > 1 ? 2 : 1; };
+  const lgCols = (L) => { c.font = S.font(14 * G52.FS); const half = (W - 24) / 2 - 40; return L.every(x => c.measureText((x.e ? x.e + ' ' : '') + x.t).width <= half) && L.length > 1 ? 2 : 1; };
   const drawBanner = (draw, y0) => { const I = bInfo(); let y = (y0 || 0) + 8;
     if (I.dots) { const n = I.dots.n, gap = 16, x0 = W / 2 + (n - 1) * gap / 2; if (draw) { for (let i = 0; i < n; i++) { const r = I.dots.res[i]; S.circle(x0 - i * gap, y + 6, 5, r === true ? '#22c55e' : r === false ? '#ef4444' : i === I.dots.k ? '#fde047' : '#ffffff40'); } if (I.tmax > 0) { for (let i = 0; i < I.tmax; i++) S.circle(16 + i * 13, y + 6, 4.5, i < I.tries ? '#60a5fa' : '#ffffff30'); } } y += 18; }
-    const sz = I.t.length > 120 ? 14 : 16; if (I.t) { c.font = S.font(sz); const n = Math.min(4, S.wrap(I.t, W - 24, sz).length); if (draw) S.text(I.t, W / 2, y + n * sz * 1.22 / 2, {sz, col:'#fff', maxW:W - 24, max:4, lh:1.22}); y += n * sz * 1.22 + 6; }
+    const sz = I.t.length > 120 ? 14 : 16; if (I.t) { c.font = S.font(sz); const n = Math.min(4, S.wrap(I.t, W - 24, sz * G52.FS).length); if (draw) S.text(I.t, W / 2, y + n * sz * G52.FS * 1.2 / 2, {sz, col:'#fff', maxW:W - 24, max:4, lh:1.2}); y += n * sz * G52.FS * 1.2 + 6; }
     if (I.L.length) { const cols = lgCols(I.L), cw = (W - 24 - (cols - 1) * 6) / cols, fz = 14; let rowH = 0;
-      I.L.forEach((x, i) => { const col = i % cols; if (col === 0 && i) { y += rowH + 5; rowH = 0; } const s = (x.e ? x.e + ' ' : '') + x.t, lines = Math.min(3, S.wrap(s, cw - 40, fz, 600).length), h = Math.max(30, lines * fz * 1.25 + 10); rowH = Math.max(rowH, h);
+      I.L.forEach((x, i) => { const col = i % cols; if (col === 0 && i) { y += rowH + 5; rowH = 0; } const s = (x.e ? x.e + ' ' : '') + x.t, lines = Math.min(3, S.wrap(s, cw - 40, fz * G52.FS, 600).length), h = Math.max(30, lines * fz * G52.FS * 1.25 + 10); rowH = Math.max(rowH, h);
         if (draw) { const xr = W - 12 - col * (cw + 6); S.rr(xr - cw, y, cw, h, 10, x.mk === 'ok' ? '#16a34acc' : x.mk === 'no' ? '#ef444466' : 'rgba(255,255,255,.13)', x.mk === 'ok' ? '#86efac' : 'rgba(255,255,255,.25)', 1.5); S.circle(xr - 17, y + h / 2, 12, x.col, '#fff', 2); S.text(x.let, xr - 17, y + h / 2 + 1, {sz:13}); S.text(s, xr - 36, y + h / 2, {sz:fz, wt:600, col:'#fff', al:'right', maxW:cw - 42, max:3, lh:1.25}); } });
       y += rowH + 4; }
     return y + 6; };
@@ -631,7 +633,7 @@ G52.mq = function (ctx, R, op) {
   const draw = () => { const r = cur; box.innerHTML = ctx.dots(R.length, k, res) + (op.qInCanvas ? `<div class="g2-qmini">${ctx.api.sayBtn(U.plain(r.q))}</div>` : `<div class="g52-q">${r.pic ? `<span class="g52-qpic">${r.pic}</span>` : ''}${r.q} ${ctx.api.sayBtn(U.plain(r.q))}</div>`) +
       ((op.legend === false || op.qInCanvas) && M.isShort(r) ? '' : `<div class="g2-legend">${M.opts(r).map(o => `<div class="g2-lg" data-j="${o.j}"><b style="background:${o.col}">${o.let}</b><span>${o.e ? o.e + ' ' : ''}${U.esc(o.t)}</span></div>`).join('')}</div>`) + `<div class="g2-tries" id="g2tr"></div>`; M.paint(); };
   M.paint = () => { const e = box.querySelector('#g2tr'); if (e) e.innerHTML = op.tries > 0 ? 'المحاولات: ' + '🔵'.repeat(Math.max(0, tries)) + '⚪'.repeat(Math.max(0, op.tries - tries)) : ''; };
-  M.next = () => { k++; if (k >= R.length) { done = true; ctx.after(600, () => ctx.done(c / R.length)); return; } cur = R[k]; M.shown = cur; M.marks = {}; first = true; tries = op.tries; draw(); op.onRound && op.onRound(cur, k, M.opts(cur)); };
+  M.next = () => { k++; if (k >= R.length) { done = true; if (op.onEnd) op.onEnd(c / R.length); else ctx.after(600, () => ctx.done(c / R.length)); return; } cur = R[k]; M.shown = cur; M.marks = {}; first = true; tries = op.tries; draw(); op.onRound && op.onRound(cur, k, M.opts(cur)); };
   /* أصاب الطالب الإجابة j */
   M.hit = j => { if (done || !cur) return null; const ok = j === cur.a; const el = box.querySelector(`.g2-lg[data-j="${j}"]`);
     M.marks[j] = ok ? 'ok' : 'no';
@@ -1096,9 +1098,9 @@ function carTop(S, x, y, col, a, w) { w = w || 30; const h = w * 1.8, c = S.c; c
 /* 1) قيادة السيارة ثلاثية الأبعاد من خلف السيارة: الطريق أمامك والإجابات تقترب */
 G52.reg('car', {name:'قيادة السيارة', icon:'🏎️', form:'mcq', render(ctx) {
   head(ctx, '🏎️', 'قيادة السيارة', 'أنت تقود من خلف السيارة! وجّهها بزرّي ◀▶ أسفل اليسار (أو الأسهم)، واضغط دوّاسة البنزين أسفل اليمين (أو ⬆) لتسرع، و⬇ للفرملة. تجاوز السيارات دون أن تصطدم بها، وادخل المسار الذي تعلوه لوحة الإجابة الصحيحة.');
-  const L = ctx.lvl, S = G52.stage(ctx, {land:true, glass:[...G52.GL.lrLeft(800, 398, 326, 92, 34), {k:'up', x:714, y:300, w:100, h:150, icon:'', pedal:true}]}); const M = G52.mq(ctx, ctx.cfg.rounds, {tries:3, hideBox:true, onRound:() => { gate = null; gateZ = pos + 7000; ord = U.shuffle(M.opts(M.cur)); }}); ctx.__M = M;
+  const L = ctx.lvl, S = G52.stage(ctx, {land:true, glass:[...G52.GL.lrLeft(800, 398, 326, 92, 34), {k:'up', x:714, y:300, w:100, h:150, icon:'', pedal:true}]}); const M = G52.mq(ctx, ctx.cfg.rounds, {tries:3, hideBox:true, onEnd:fr => { finish = {z:pos + 5200, fr, done:false}; }, onRound:() => { gate = null; gateZ = pos + 7000; ord = U.shuffle(M.opts(M.cur)); }}); ctx.__M = M;
   const W = 800, H = 398, HZ = 150, SL = 200, DS = 74, CHh = 1000, RW = 1000, N = 70;
-  let ord = [], pos = 0, speed = 0, px = 0, traffic = [], gate = null, gateZ = 6000, crash = 0, skyOff = 0, eng = G52.sndLoop(ctx), lastSteer = 0, tt = 0;
+  let finish = null, ord = [], pos = 0, speed = 0, px = 0, traffic = [], gate = null, gateZ = 6000, crash = 0, skyOff = 0, eng = G52.sndLoop(ctx), lastSteer = 0, tt = 0;
   const base = [2600, 3000, 3400, 3800][L], vmax = base * 1.9;
   const curveAt = z => L === 0 ? 0 : Math.sin(z / 9000) * [0, .9, 1.4, 1.9][L] + Math.sin(z / 3700) * [0, .3, .6, .9][L];
   /* إسقاط نقطة (x بالنسبة للطريق، z أمام الكاميرا) مع انحناء الطريق */
@@ -1113,7 +1115,7 @@ G52.reg('car', {name:'قيادة السيارة', icon:'🏎️', form:'mcq', re
     S.rr(-w * .5, -h * .26, w, h * .06, 2, '#334155'); c.restore(); };
   S.run(dt => {
     const steer = (S.keys.has('right') ? 1 : 0) - (S.keys.has('left') ? 1 : 0), gas = S.keys.has('up'), brake = S.keys.has('down');
-    const target = crash > 0 ? base * .35 : gas ? vmax : brake ? base * .45 : base; speed += (target - speed) * Math.min(1, dt * (gas ? 1.2 : 1.8));
+    const target = finish ? vmax * 1.1 : crash > 0 ? base * .35 : gas ? vmax : brake ? base * .45 : base; speed += (target - speed) * Math.min(1, dt * (gas ? 1.2 : 1.8));
     if (crash > 0) crash -= dt; pos += speed * dt;
     const cv = curveAt(pos); px += steer * dt * 2.3 * (.6 + speed / vmax * .6) - cv * dt * (speed / vmax) * .55; px = U.clamp(px, -1.25, 1.25); if (Math.abs(px) > 1.02) speed *= (1 - dt * 1.5);
     if (steer && steer !== lastSteer && speed > base * .8) SN().skid(); lastSteer = steer; eng.set(40 + speed / 45, .09);
@@ -1144,13 +1146,19 @@ G52.reg('car', {name:'قيادة السيارة', icon:'🏎️', form:'mcq', re
         S.c.fillStyle = '#475569'; S.c.fillRect(pL.x - 4, top, Math.max(3, 30 * pL.w / RW), pL.y - top); S.c.fillRect(pR.x - 4, top, Math.max(3, 30 * pL.w / RW), pR.y - top); S.c.fillStyle = '#334155'; S.c.fillRect(pL.x, top - 8, pR.x - pL.x, Math.max(4, 40 * pL.w / RW));
         gate.os.forEach((o, i) => { const p = at(ln[i], zr), lw = pL.w * 2 / n * .9; S.rr(p.x - lw / 2, top, lw, ph, Math.max(2, lw * .06), o.col, '#fff', Math.max(1, lw * .02)); const sz = Math.max(7, Math.min(22, lw * .09)); if (lw > 50) { if (M.isShort(M.cur || M.R[0])) S.text(o.t, p.x, top + ph * .5, {sz, maxW:lw * .9, max:2}); else S.text(o.let, p.x, top + ph * .5, {sz:sz * 1.5}); } S.c.fillStyle = o.col + '33'; S.c.beginPath(); const a = at(ln[i] - 1 / n, zr), b = at(ln[i] + 1 / n, zr); S.c.moveTo(a.x, a.y); S.c.lineTo(b.x, b.y); S.c.lineTo(b.x, b.y + 3); S.c.lineTo(a.x, a.y + 3); S.c.fill(); }); }});
       if (!gate.done && zr < 120) { gate.done = true; const n = gate.os.length, ln = lanesOf(n); const i = ln.reduce((bi, v, k) => Math.abs(v - px) < Math.abs(ln[bi] - px) ? k : bi, 0); const o = gate.os[i]; SN().whoosh(.25); S.burst(W / 2, H - 60, o.col, 30); const ok = M.hit(o.j); ctx.after(500, () => { gate = null; gateZ = pos + (ok ? 9000 : 6000); }); } }
+    /* خط النهاية: شريط مربعات أبيض وأسود وبوابة أعلام */
+    if (finish) { const zr = finish.z - pos; if (zr > 30 && zr < N * SL) objs.push({zr, f:() => { const rows = 2, cols = 14; for (let r = 0; r < rows; r++) { const za = zr + r * 70, zb = za + 70; for (let i = 0; i < cols; i++) { const xa = -1.15 + 2.3 * i / cols, xb = xa + 2.3 / cols, a = at(xa, za), b = at(xb, za), cc = at(xb, zb), d = at(xa, zb); S.c.fillStyle = (i + r) % 2 ? '#111827' : '#f8fafc'; S.c.beginPath(); S.c.moveTo(a.x, a.y); S.c.lineTo(b.x, b.y); S.c.lineTo(cc.x, cc.y); S.c.lineTo(d.x, d.y); S.c.fill(); } }
+        const pL = at(-1.35, zr), pR = at(1.35, zr), k = pL.w / RW, top = pL.y - 1500 * k * 1.1, bh = Math.max(8, 260 * k); S.c.fillStyle = '#334155'; S.c.fillRect(pL.x - 3, top, Math.max(3, 34 * k), pL.y - top); S.c.fillRect(pR.x - 3, top, Math.max(3, 34 * k), pR.y - top);
+        const bw = pR.x - pL.x, n = 16, cw = bw / n; for (let i = 0; i < n; i++) for (let j = 0; j < 2; j++) { S.c.fillStyle = (i + j) % 2 ? '#111827' : '#fff'; S.c.fillRect(pL.x + i * cw, top + j * bh / 2, cw + .5, bh / 2 + .5); }
+        if (bw > 160) S.text('🏁 خط النهاية 🏁', W / 2 + (pL.x + pR.x - W) / 2, top + bh + Math.max(10, 70 * k), {sz:Math.min(26, Math.max(11, 140 * k)), stroke:'#000a'}); S.emoji('🏁', pL.x, top - 14 * k * 10, Math.max(14, 300 * k)); S.emoji('🏁', pR.x, top - 14 * k * 10, Math.max(14, 300 * k)); }});
+      if (!finish.done && zr < 60) { finish.done = true; SN().horn(); S.burst(W / 2, H - 80, ['#fff', '#111827', '#fde047'], 50, 320); ctx.after(500, () => ctx.done(finish.fr)); } }
     objs.sort((a, b) => b.zr - a.zr).forEach(o => o.f());
     // سيارة اللاعب
     const bob = Math.sin(S.t * 30) * (speed / vmax) * 1.2; carRear(W / 2, H - 16 + bob, 132, crash > 0 && Math.floor(crash * 10) % 2 ? '#fca5a5' : '#dc2626', steer * .05);
     if (gas && speed > base) { S.emoji('💨', W / 2 - 52, H - 8, 22); S.emoji('💨', W / 2 + 52, H - 8, 22); }
     // لوحة السرعة ودوّاسة البنزين
     /* خانات الخيارات أعلى الشاشة بنفس ألوان المسارات وترتيبها */
-    if (ord.length) { const n = ord.length, gap = 10, bw = (W - 20 - gap * (n - 1)) / n; S.c.font = S.font(15); const ln = Math.min(2, Math.max(...ord.map(o => S.wrap(o.t, bw - 16, 15).length))), bh = ln * 18 + 14;
+    if (ord.length && !finish) { const n = ord.length, gap = 10, bw = (W - 20 - gap * (n - 1)) / n; S.c.font = S.font(15); const ln = Math.min(2, Math.max(...ord.map(o => S.wrap(o.t, bw - 16, 15).length))), bh = ln * 18 + 14;
       ord.forEach((o, i) => { const x = 10 + i * (bw + gap), mk = M.marks[o.j]; S.c.globalAlpha = mk === 'no' ? .45 : 1; S.rr(x, 6, bw, bh, 12, o.col, mk === 'ok' ? '#fde047' : '#fff', mk === 'ok' ? 4 : 2.5); S.text((o.e ? o.e + ' ' : '') + o.t, x + bw / 2, 6 + bh / 2, {sz:15, maxW:bw - 16, max:2, stroke:'#0004'}); S.c.globalAlpha = 1; }); }
     const pg0 = S.glass.find(g => g.pedal); if (pg0) { S.rr(pg0.x - 58, pg0.y - 112, 116, 30, 15, '#0009'); S.text('🏁 ' + U.arn(Math.round(speed / 30)) + ' كم/س', pg0.x, pg0.y - 97, {sz:14}); }
     const pg = S.glass.find(g => g.pedal); if (pg) { S.c.save(); S.c.translate(pg.x, pg.y); S.c.rotate(-.08); S.rr(-42, -66, 84, 132, 16, pg.on ? 'rgba(255,255,255,.55)' : 'rgba(255,255,255,.3)', 'rgba(255,255,255,.85)', 2); for (let k = -4; k <= 4; k++) S.rr(-32, k * 13 - 4, 64, 6, 3, 'rgba(15,23,42,.45)'); S.text('بنزين', 0, 78, {sz:12, stroke:'#0008'}); S.c.restore(); }
@@ -1413,8 +1421,8 @@ G52.reg('whack', {name:'اضرب الخُلد', icon:'🔨', form:'cls', render(
     if (!K.over) { st -= dt; if (st <= 0) { st = U.rnd(.5, .9) / (1 + L * .25); const free = H.filter(h => !h.m); if (free.length) { const h = U.pick(free); h.m = {it:K.next(), up:0, life:[2.4, 2, 1.6, 1.3][L], hit:false}; } } }
     H.forEach(h => { S.c.fillStyle = '#3f2a14'; S.c.beginPath(); S.c.ellipse(h.x, h.y, 52, 16, 0, 0, 6.283); S.c.fill();
       if (h.m) { const m = h.m; m.life -= dt; m.up = m.life > .25 ? Math.min(1, m.up + dt * 6) : Math.max(0, m.up - dt * 6); if (m.life <= 0) h.m = null; else {
-        S.c.save(); S.c.beginPath(); S.c.rect(h.x - 62, h.y - 150, 124, 150); S.c.clip(); const y = h.y + 40 - m.up * 110; S.rr(h.x - 32, y - 46, 64, 110, 30, m.hit ? '#a8a29e' : '#a16207'); S.emoji(m.hit ? '😵' : '🐹', h.x, y - 30, 34);
-        S.rr(h.x - 58, y - 8, 116, 44, 8, '#fef3c7', '#78350f', 3); S.text(T(m.it), h.x, y + 14, {sz:11, col:'#1f2937', maxW:108, max:2}); S.circle(h.x - 52, y + 6, 7, '#a16207'); S.circle(h.x + 52, y + 6, 7, '#a16207'); S.c.restore(); } }
+        S.c.save(); S.c.beginPath(); S.c.rect(h.x - 78, h.y - 150, 156, 150); S.c.clip(); const y = h.y + 40 - m.up * 110; S.rr(h.x - 32, y - 46, 64, 110, 30, m.hit ? '#a8a29e' : '#a16207'); S.emoji(m.hit ? '😵' : '🐹', h.x, y - 30, 34);
+        S.rr(h.x - 72, y - 12, 144, 60, 10, '#fef3c7', '#78350f', 3); S.text(T(m.it), h.x, y + 18, {sz:14, col:'#1f2937', maxW:130, max:2}); S.circle(h.x - 66, y + 6, 7, '#a16207'); S.circle(h.x + 66, y + 6, 7, '#a16207'); S.c.restore(); } }
       S.c.fillStyle = '#5c3a1a'; S.c.beginPath(); S.c.ellipse(h.x, h.y + 4, 54, 10, 0, 0, Math.PI); S.c.fill(); S.text(U.arn([5, 6, 7, 8, 1, 2, 3, 4][H.indexOf(h)]), h.x + 44, h.y + 16, {sz:10, col:'#ecfccb88'}); });
     if (ham) { ham.t -= dt; S.c.save(); S.c.translate(ham.x + 30, ham.y); S.c.rotate(-.6 + (1 - ham.t / .2) * .9); S.emoji('🔨', 0, 0, 48); S.c.restore(); if (ham.t <= 0) ham = null; }
     K.hud(S); S.fx(dt);
@@ -2061,6 +2069,71 @@ G52.keyOf = function (k, c) {
   return '';
 };
 })();
+/* ===== G52 v2: نهايات الفوز (احتفال متحرك + صوت) ===== */
+(function () {
+const {U} = G52, SN = G52.snd;
+/* أصوات الاحتفال */
+SN.cheer = (d) => { d = d || 2.8; SN.noise(d, {f:1100, ft:'bandpass', q:.7, v:.32, a:.25}); SN.noise(d * .9, {f:2200, ft:'bandpass', q:1.2, v:.16, a:.4, at:.1});
+  for (let i = 0; i < 26; i++) SN.noise(.05, {f:3500, ft:'highpass', v:.18, at:.15 + Math.random() * (d - .4)});
+  [0, .9].forEach(t => SN.tone(2200, .25, {type:'sine', v:.06, to:2600, at:t + .2})); };
+SN.fanfare = () => { [[523, 0, .16], [659, .16, .16], [784, .32, .16], [1047, .48, .5], [784, .98, .14], [1047, 1.12, .6]].forEach(([f, at, d]) => { SN.tone(f, d + .05, {type:'sawtooth', v:.07, at}); SN.tone(f * 2, d, {type:'triangle', v:.05, at}); }); };
+SN.horn = () => { SN.tone(440, .35, {type:'square', v:.08}); SN.tone(554, .35, {type:'square', v:.07}); SN.tone(440, .6, {type:'square', v:.08, at:.45}); SN.tone(554, .6, {type:'square', v:.07, at:.45}); };
+SN.firework = () => { SN.tone(400, .5, {to:1400, type:'sine', v:.04}); SN.noise(.7, {f:1800, to:300, v:.28, at:.45}); };
+SN.soft = () => { [523, 494, 440].forEach((f, i) => SN.tone(f, .3, {type:'triangle', v:.12, at:i * .18})); };
+
+const THEME = {};
+['penalty', 'basketball', 'bowling', 'golf', 'pong', 'archery', 'slingshot', 'cannon', 'duckhunt', 'ringtoss', 'whack', 'spinner'].forEach(k => THEME[k] = 'sport');
+['car', 'runner', 'flappy', 'platform', 'frogger', 'stick', 'doodle', 'wire'].forEach(k => THEME[k] = 'race');
+['shooter', 'lander', 'calc', 'balloons', 'flashlight'].forEach(k => THEME[k] = 'fire');
+const ICON = {penalty:'⚽', basketball:'🏀', bowling:'🎳', golf:'⛳', pong:'🏓', archery:'🎯', slingshot:'🎯', cannon:'💥', duckhunt:'🦆', ringtoss:'⭕', whack:'🔨', spinner:'🎡', car:'🏎️', runner:'🏃', flappy:'🐦', platform:'🚩', frogger:'🐸', stick:'🌉', doodle:'🐸', wire:'⚡', shooter:'🚀', lander:'🛸', diver:'🤿', snake:'🐍', pacman:'🟡', maze:'🌀'};
+const TITLE = {penalty:'گووول! فُزت بالمباراة', car:'وصلت إلى خط النهاية!', basketball:'سلة الفوز!', bowling:'ضربة رائعة!', golf:'في الحفرة! فُزت', runner:'وصلت أولًا!', lander:'هبوط ناجح!', shooter:'المهمة أُنجزت!', diver:'كنز البحر لك!', platform:'وصلت إلى القمة!'};
+const CC = ['#ef4444', '#f59e0b', '#fde047', '#22c55e', '#38bdf8', '#a855f7', '#f472b6', '#fff'];
+
+G52.celebrate = function (host, key, f, cb) {
+  const win = f >= .5, th = THEME[key] || 'party', stars = f >= .9 ? 3 : f >= .7 ? 2 : f >= .5 ? 1 : 0;
+  const box = host.querySelector('.g2-cvw') || host; const cs = getComputedStyle(box); if (cs.position === 'static') box.style.position = 'relative';
+  const cv = document.createElement('canvas'); cv.className = 'g2-win'; cv.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;z-index:20;touch-action:none;cursor:pointer'; box.appendChild(cv);
+  if (box === host && host.offsetHeight < 260) { cv.style.position = 'fixed'; }
+  const c = cv.getContext('2d'); let W = 0, H = 0, dpr = 1;
+  const fit = () => { const r = cv.getBoundingClientRect(); dpr = Math.min(2, window.devicePixelRatio || 1); W = r.width; H = r.height; cv.width = W * dpr; cv.height = H * dpr; }; fit();
+  const T = win ? 4.2 : 2.2; let t = 0, last = performance.now(), ended = false, starT = [];
+  const conf = win ? Array.from({length:150}, () => ({x:Math.random() * W, y:-Math.random() * H, w:U.rnd(5, 10), h:U.rnd(8, 15), vy:U.rnd(80, 190), vx:U.rnd(-40, 40), a:Math.random() * 6, va:U.rnd(-6, 6), col:U.pick(CC)})) : [];
+  let fw = [], sparks = [], nextFw = .2;
+  const fin = () => { if (ended) return; ended = true; cv.remove(); cb && cb(); };
+  cv.addEventListener('pointerdown', e => { e.stopPropagation(); if (t > .8) fin(); });
+  /* الأصوات */
+  if (win) { if (th === 'sport') { SN.cheer(3.2); setTimeout(() => SN.fanfare(), 300); } else if (th === 'race') { SN.horn(); SN.cheer(2.6); setTimeout(() => SN.fanfare(), 500); } else { SN.fanfare(); } } else SN.soft();
+  const emoji = (e, x, y, s) => { c.font = `${s}px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(e, x, y); };
+  const txt = (s, x, y, sz, col, st) => { c.font = `800 ${sz}px system-ui,"Segoe UI",Tahoma,sans-serif`; c.direction = 'rtl'; c.textAlign = 'center'; c.textBaseline = 'middle'; if (st) { c.lineWidth = Math.max(3, sz / 7); c.strokeStyle = st; c.strokeText(s, x, y); } c.fillStyle = col; c.fillText(s, x, y); };
+  /* علم مربعات أبيض وأسود يرفرف */
+  const flag = (x0, y0, fw2, fh, dir, ph) => { c.save(); c.strokeStyle = '#334155'; c.lineWidth = Math.max(3, fw2 * .05); c.beginPath(); c.moveTo(x0, y0 - fh * .2); c.lineTo(x0, y0 + fh * 1.9); c.stroke(); const n = 6, m = 4, cw = fw2 / n, ch = fh / m;
+    for (let i = 0; i < n; i++) for (let j = 0; j < m; j++) { const wv = k => Math.sin(t * 7 + ph + k * .9) * fh * .09 * (k / n); const xa = x0 + dir * i * cw, xb = x0 + dir * (i + 1) * cw; c.fillStyle = (i + j) % 2 ? '#111827' : '#fff'; c.beginPath(); c.moveTo(xa, y0 + j * ch + wv(i)); c.lineTo(xb, y0 + j * ch + wv(i + 1)); c.lineTo(xb, y0 + (j + 1) * ch + wv(i + 1)); c.lineTo(xa, y0 + (j + 1) * ch + wv(i)); c.closePath(); c.fill(); }
+    c.restore(); };
+  const step = now => { if (ended) return; const dt = Math.min(.05, (now - last) / 1000); last = now; t += dt; if (!cv.isConnected) { fin(); return; } if (cv.getBoundingClientRect().width !== W) fit();
+    c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, W, H);
+    c.fillStyle = `rgba(2,6,23,${Math.min(.55, t * 1.2)})`; c.fillRect(0, 0, W, H);
+    const S = Math.min(W, H);
+    if (win && (th === 'fire' || th === 'party' || th === 'sport')) { nextFw -= dt; if (nextFw <= 0 && t < T - .8) { nextFw = U.rnd(.35, .7); fw.push({x:U.rnd(.15, .85) * W, y:H, ty:U.rnd(.12, .45) * H, col:U.pick(CC)}); if (th !== 'sport') SN.firework(); } }
+    fw.forEach(r => { r.y -= H * 1.3 * dt; c.fillStyle = '#fde68a'; c.beginPath(); c.arc(r.x, r.y, 2.5, 0, 6.283); c.fill(); if (r.y <= r.ty) { r.dead = true; for (let i = 0; i < 46; i++) { const a = i / 46 * 6.283, v = U.rnd(.6, 1) * S * .32; sparks.push({x:r.x, y:r.y, vx:Math.cos(a) * v, vy:Math.sin(a) * v, l:1, col:r.col}); } } }); fw = fw.filter(r => !r.dead);
+    sparks.forEach(p => { p.vy += S * .35 * dt; p.vx *= .985; p.x += p.vx * dt; p.y += p.vy * dt; p.l -= dt * .8; c.globalAlpha = Math.max(0, p.l); c.fillStyle = p.col; c.beginPath(); c.arc(p.x, p.y, 2.6, 0, 6.283); c.fill(); }); c.globalAlpha = 1; sparks = sparks.filter(p => p.l > 0);
+    conf.forEach(p => { p.y += p.vy * dt; p.x += p.vx * dt + Math.sin(t * 3 + p.a) * .6; p.a += p.va * dt; if (p.y > H + 20 && t < T - 1.2) { p.y = -10; p.x = Math.random() * W; } c.save(); c.translate(p.x, p.y); c.rotate(p.a); c.fillStyle = p.col; c.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * Math.abs(Math.cos(p.a * 1.3))); c.restore(); });
+    if (win && th === 'race') { const fwid = S * .32, fh = fwid * .62; flag(W * .5 - S * .06, H * .1, fwid, fh, -1, 0); flag(W * .5 + S * .06, H * .1, fwid, fh, 1, 1.5); }
+    if (win && th === 'sport') { for (let i = 0; i < 18; i++) { const x = (i + .5) / 18 * W, y = H - S * .05 - Math.abs(Math.sin(t * 9 + i * 1.7)) * S * .05; emoji(i % 3 ? '🙌' : '👏', x, y, S * .07); } }
+    /* البطاقة الوسطى */
+    const k = Math.min(1, t / .45), sc = k < 1 ? 1 - Math.pow(1 - k, 3) * 1 + Math.sin(k * Math.PI) * .12 : 1, cy = H * (th === 'race' && win ? .6 : .5);
+    c.save(); c.translate(W / 2, cy); c.scale(sc, sc);
+    const cw = Math.min(W * .86, S * 1.05), chh = S * .58; c.fillStyle = win ? 'rgba(76,29,149,.92)' : 'rgba(30,41,59,.92)'; c.strokeStyle = win ? '#fde047' : '#94a3b8'; c.lineWidth = 4; c.beginPath(); c.roundRect ? c.roundRect(-cw / 2, -chh / 2, cw, chh, 22) : c.rect(-cw / 2, -chh / 2, cw, chh); c.fill(); c.stroke();
+    const bob = Math.sin(t * 4) * S * .015; emoji(win ? (f >= .9 ? '🏆' : '🥇') : '💪', 0, -chh * .22 + bob, S * .17);
+    if (win && ICON[key]) emoji(ICON[key], S * .17, -chh * .3 - bob, S * .08);
+    txt(win ? '🎉 ' + (TITLE[key] || 'أحسنت! فُزت') : 'انتهت اللعبة — حاول مرة أخرى', 0, chh * .06, Math.max(16, Math.min(30, S * .062)), '#fff', '#0006');
+    for (let i = 0; i < 3; i++) { const at = .5 + i * .35, on = i < stars && t > at; if (on && !starT[i]) { starT[i] = 1; SN.ding(); } const s2 = on ? Math.min(1, (t - at) * 5) : 1; c.save(); c.translate((i - 1) * S * .12, chh * .27); c.scale(s2, s2); emoji(on ? '⭐' : '☆', 0, 0, S * .1); c.restore(); }
+    txt(U.arn(Math.round(f * 100)) + '٪', 0, chh * .42, Math.max(12, S * .04), '#e9d5ff');
+    c.restore();
+    if (t > 1.2) txt('اضغط للمتابعة', W / 2, H - S * .04 - (th === 'sport' && win ? S * .1 : 0), Math.max(11, S * .03), 'rgba(255,255,255,.8)');
+    if (t >= T) { fin(); return; } requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+};
+})();
 /* ===== G52 v2: تشغيل الألعاب بملء الشاشة (أفقي 16:9 أو عمودي) ===== */
 (function () {
 const {U} = G52;
@@ -2094,15 +2167,15 @@ G52.run = function (host, key, cfg, api) {
   let ctx = null, started = false;
   const start = (noFs) => { if (started) return; started = true; host.innerHTML = '';
     if (!noFs) enter(host, mode);
-    ctx = run0(host, key, cfg, Object.assign({}, api, {done:f => { leave(host); done0(f); }}));
+    ctx = run0(host, key, cfg, Object.assign({}, api, {done:f => { const end = () => { leave(host); done0(f); }; if (host.__solving || !G52.celebrate) end(); else G52.celebrate(host, key, f, end); }}));
     const x = document.createElement('div'); x.className = 'g2-fsbar'; x.innerHTML = `<button class="g2-back" title="رجوع">↩</button><button class="g2-fsx" title="ملء الشاشة">⛶</button>`; host.appendChild(x);
     x.querySelector('.g2-back').onclick = () => leave(host); x.querySelector('.g2-fsx').onclick = () => enter(host, mode);
-    host.__solve0 = host.__solve; ctx.onStop(() => leave(host)); const wd = setInterval(() => { if (!host.isConnected) { clearInterval(wd); leave(host); } }, 500); };
+    host.__solve0 = host.__solve; ctx.onStop(() => setTimeout(() => { if (!host.querySelector('.g2-win')) leave(host); }, 0)); const wd = setInterval(() => { if (!host.isConnected) { clearInterval(wd); leave(host); } }, 500); };
   host.classList.add('g52'); host.dataset.g52 = key;
   host.innerHTML = `<div class="g2-start ${mode}"><div class="g2-sic">${def.icon || '🎮'}</div><div class="g2-sname">${U.esc(def.name || '')}</div>
     ${help(def) ? `<div class="g2-shelp">${help(def)}</div>` : ''}<button class="g52-btn big g2-sgo">▶ ابدأ اللعبة</button><div class="g2-snote">${mode === 'land' ? '📱↔️ تعمل اللعبة بملء الشاشة أفقيًا — أدِر جهازك' : '📱 تعمل اللعبة بملء الشاشة'}</div></div>`;
   host.querySelector('.g2-sgo').onclick = () => start(false);
-  host.__solve = () => { if (!started) start(true); setTimeout(() => host.__solve0 && host.__solve0(), 300); };
+  host.__solve = () => { host.__solving = true; if (!started) start(true); setTimeout(() => host.__solve0 && host.__solve0(), 300); };
   host.__stop = () => { if (ctx) ctx.stop(); leave(host); };
   return {get ctx() { return ctx; }, start};
 };
