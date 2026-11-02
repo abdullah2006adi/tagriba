@@ -524,7 +524,7 @@ const {U} = G52;
 const COL = ['#ef4444', '#2563eb', '#16a34a', '#d97706', '#9333ea', '#0891b2'], LET = ['أ', 'ب', 'ج', 'د', 'هـ', 'و'];
 G52.COL = COL; G52.LET = LET;
 /* ارتفاع منطقة اللعب العمودية التي تملأ 9:16 مع شريط سؤال ضيّق */
-G52.FS = 2; G52.FB = 1.45; G52.MW = 1.6; /* تكبير خط الألعاب (الضعف) وخط شريط السؤال وعرض البطاقات */
+G52.FS = 2; G52.FB = 1.45; G52.MW = 1; /* تكبير خط الألعاب (الضعف) وخط شريط السؤال وعرض البطاقات */
 G52.PH = (w, foot) => Math.round(w * 16 / 9) - 72 - (foot || 0);
 const txt = o => U.plain(U.O(o).t || '').replace(/[ً-ْٰ]/g, m => m); // نُبقي التشكيل
 G52.T = o => U.plain(U.O(o).t || '');
@@ -579,14 +579,16 @@ G52.stage = function (ctx, o) {
   S.circle = (x, y, r, fill, stroke, lw) => { c.beginPath(); c.arc(x, y, r, 0, Math.PI * 2); if (fill) { c.fillStyle = fill; c.fill(); } if (stroke) { c.lineWidth = lw || 2; c.strokeStyle = stroke; c.stroke(); } };
   S.font = (sz, wt) => `${wt || 700} ${sz}px system-ui, "Segoe UI", Tahoma, sans-serif`;
   S.wrap = (s, maxW, sz, wt) => { c.font = S.font(sz, wt); const words = String(s).split(/\s+/), L = []; let cur = ''; words.forEach(w => { const t = cur ? cur + ' ' + w : w; if (c.measureText(t).width > maxW && cur) { L.push(cur); cur = w; } else cur = t; }); if (cur) L.push(cur); return L; };
+  /* تصغير الخط تلقائيًا حتى يتسع النص في عرضه وعدد أسطره (ولا يقل عن الحجم الأصلي) */
+  S.fit = (s, maxW, sz, max, wt) => { const min = sz / G52.FS; let L; for (;;) { L = S.wrap(s, maxW, sz, wt); c.font = S.font(sz, wt); if ((L.length <= max && L.every(l => c.measureText(l).width <= maxW + 1)) || sz <= min) break; sz = Math.max(min, sz * .92); } return {sz, L}; };
   S.text = (s, x, y, op) => { op = Object.assign({sz:16, col:'#fff', wt:700, al:'center', bl:'middle', maxW:0, lh:1.2, stroke:null, max:3}, op); op.sz *= G52.FS; if (op.maxW && !op.fixW) op.maxW = Math.min(op.maxW * G52.MW, W - 12); c.font = S.font(op.sz, op.wt); c.direction = 'rtl'; c.textAlign = op.al; c.textBaseline = op.bl;
-    let L = op.maxW ? S.wrap(s, op.maxW, op.sz, op.wt) : [String(s)]; if (L.length > op.max) { L = L.slice(0, op.max); L[op.max - 1] += '…'; }
+    let L; if (op.maxW && !op.noFit) { const f = S.fit(s, op.maxW, op.sz, op.max, op.wt); op.sz = f.sz; L = f.L; c.font = S.font(op.sz, op.wt); } else L = op.maxW ? S.wrap(s, op.maxW, op.sz, op.wt) : [String(s)]; if (L.length > op.max) { L = L.slice(0, op.max); L[op.max - 1] += '…'; }
     const y0 = y - (L.length - 1) * op.sz * op.lh / 2; L.forEach((l, i) => { if (op.stroke) { c.lineWidth = 4; c.strokeStyle = op.stroke; c.strokeText(l, x, y0 + i * op.sz * op.lh); } c.fillStyle = op.col; c.fillText(l, x, y0 + i * op.sz * op.lh); }); return L.length; };
   S.emoji = (e, x, y, sz) => { c.font = `${sz}px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(e, x, y); };
   /* بطاقة نص: تعيد أبعادها */
-  S.measure = (s, maxW, sz, fix) => { sz *= G52.FS; maxW = fix ? maxW : Math.min(maxW * G52.MW, W - 12); const L = S.wrap(s, maxW, sz); c.font = S.font(sz); const w = Math.min(maxW, Math.max(...L.map(l => c.measureText(l).width))); return {w:w + 16, h:L.length * sz * 1.2 + 10, L}; };
+  S.measure = (s, maxW, sz, fix) => { sz *= G52.FS; maxW = fix ? maxW : Math.min(maxW * G52.MW, W - 12); const f = S.fit(s, maxW, sz, 3, 700); sz = f.sz; const L = f.L.slice(0, 3); c.font = S.font(sz); const w = Math.min(maxW, Math.max(...L.map(l => c.measureText(l).width))); return {w:w + 16, h:L.length * sz * 1.2 + 10, L, sz, maxW}; };
   S.card = (s, x, y, op) => { op = Object.assign({sz:14, maxW:120, bg:'#fff', fg:'#1f2937', bd:null, e:null}, op); const m = S.measure(s, op.maxW, op.sz, op.fixW); const eh = op.e ? op.sz * 1.6 : 0, w = Math.max(m.w, eh ? op.sz * 2 : 0), h = m.h + eh; x = U.clamp(x, w / 2 + 2, W - w / 2 - 2);
-    S.rr(x - w / 2, y - h / 2, w, h, 10, op.bg, op.bd, 3); if (op.e) S.emoji(op.e, x, y - h / 2 + eh / 2 + 4, op.sz * 1.3); S.text(s, x, y + eh / 2, {sz:op.sz, col:op.fg, maxW:op.fixW ? op.maxW : op.maxW, fixW:op.fixW, max:4}); return {x:x - w / 2, y:y - h / 2, w, h}; };
+    S.rr(x - w / 2, y - h / 2, w, h, 10, op.bg, op.bd, 3); if (op.e) S.emoji(op.e, x, y - h / 2 + eh / 2 + 4, op.sz * 1.3); S.text(s, x, y + eh / 2, {sz:m.sz / G52.FS, col:op.fg, maxW:m.maxW + 1, fixW:1, noFit:1, max:3}); return {x:x - w / 2, y:y - h / 2, w, h}; };
   /* جسيمات */
   S.burst = (x, y, col, n, sp) => { for (let i = 0; i < (n || 18); i++) { const a = Math.random() * 6.283, v = U.rnd(40, sp || 220); S.parts.push({x, y, vx:Math.cos(a) * v, vy:Math.sin(a) * v - 60, life:U.rnd(.5, 1), col:Array.isArray(col) ? U.pick(col) : col, r:U.rnd(2, 5)}); } };
   S.float = (s, x, y, col) => S.floats.push({s, x, y, col:col || '#fde047', life:1});
@@ -811,7 +813,7 @@ G52.reg('bowling', {name:'البولينغ', icon:'🎳', form:'mcq', render(ctx
     const lg = S.c.createLinearGradient(0, sy(1.25), 0, sy(0)); lg.addColorStop(0, '#b45309'); lg.addColorStop(1, '#fbbf24'); poly([[-1, 0], [1, 0], [1, 1.25], [-1, 1.25]], lg);
     S.c.strokeStyle = '#92400e55'; S.c.lineWidth = 1; for (let i = -9; i <= 9; i++) { const x = i / 9.5; S.c.beginPath(); S.c.moveTo(...P(x, 0)); S.c.lineTo(...P(x, 1.25)); S.c.stroke(); }
     for (let i = -2; i <= 2; i++) { const [a, b] = P(i * .3, .35); S.text('▲', a, b, {sz:12 * sc(.35) * 1.4, col:'#7c2d12'}); }
-    groups.forEach(gp => { const w = 2 / groups.length; poly([[gp.cx - w / 2 + .02, .8], [gp.cx + w / 2 - .02, .8], [gp.cx + w / 2 - .02, 1.12], [gp.cx - w / 2 + .02, 1.12]], gp.o.col + '33'); const [a, b] = P(gp.cx, 1.25); tag(S, M, gp.o, a, b - 26, {maxW:300 / groups.length * .6 + 30, sz:11, r:14}); });
+    groups.forEach(gp => { const w = 2 / groups.length; poly([[gp.cx - w / 2 + .02, .8], [gp.cx + w / 2 - .02, .8], [gp.cx + w / 2 - .02, 1.12], [gp.cx - w / 2 + .02, 1.12]], gp.o.col + '33'); const [a, b] = P(gp.cx, 1.25), n = groups.length, tx = 190 + (gp.cx * n / 2) * (370 / n); S.c.strokeStyle = gp.o.col; S.c.lineWidth = 2; S.c.setLineDash([4, 4]); S.c.beginPath(); S.c.moveTo(tx, 50); S.c.lineTo(a, b - 6); S.c.stroke(); S.c.setLineDash([]); tag(S, M, gp.o, tx, 30, {maxW:370 / n - 10, fixW:1, sz:11, r:14}); });
     if (!rolling && M.cur) { bx = Math.sin(S.t * [2.2, 2.7, 3.2, 3.7][L]) * .82; }
     if (ball) { const kc = (S.keys.has('left') ? -1 : 0) + (S.keys.has('right') ? 1 : 0) || curve; ball.vx += kc * [1.3, 1.2, 1.1, 1][L] * dt; ball.x += ball.vx * dt; ball.z += ball.vz * dt; ball.rot += dt * 8;
       if (Math.abs(ball.x) > .94 && !ball.gut) { ball.gut = true; ball.vx = 0; SN().thud(); S.float('في القناة!', 190, 300, '#fecaca'); } if (ball.gut) ball.x = Math.sign(ball.x) * 1.18;
@@ -854,7 +856,7 @@ G52.reg('golf', {name:'الجولف', icon:'⛳', form:'mcq', render(ctx) {
     S.c.fillStyle = '#14532d'; S.c.beginPath(); corners.forEach(([x, y], i) => i ? S.c.lineTo(x, y + (i > 1 ? 14 : 0)) : S.c.moveTo(x, y)); S.c.fill();
     const gg = S.c.createLinearGradient(0, Y0, 0, PY(WH)); gg.addColorStop(0, '#16a34a'); gg.addColorStop(1, '#4ade80'); S.c.fillStyle = gg; S.c.beginPath(); corners.forEach(([x, y], i) => i ? S.c.lineTo(x, y) : S.c.moveTo(x, y)); S.c.fill();
     for (let y = 0; y < WH; y += 40) { S.c.fillStyle = '#ffffff12'; S.c.beginPath(); [[0, y], [WW, y], [WW, y + 20], [0, y + 20]].forEach(([x, yy], i) => i ? S.c.lineTo(PX(x, yy), PY(yy)) : S.c.moveTo(PX(x, yy), PY(yy))); S.c.fill(); }
-    holes.forEach(h => { const s = s_(h.y), x = PX(h.x, h.y), y = PY(h.y); S.c.fillStyle = '#052e16'; S.c.beginPath(); S.c.ellipse(x, y, 14 * s * 1.1, 6 * s, 0, 0, 6.283); S.c.fill(); S.c.strokeStyle = '#fff'; S.c.lineWidth = 2; S.c.beginPath(); S.c.moveTo(x, y); S.c.lineTo(x, y - 50 * s); S.c.stroke(); S.c.fillStyle = h.o.col; S.c.beginPath(); S.c.moveTo(x, y - 50 * s); S.c.lineTo(x + 24 * s, y - 43 * s); S.c.lineTo(x, y - 36 * s); S.c.fill(); S.text(h.o.let, x + 8 * s, y - 43 * s, {sz:11 * s + 2}); if (M.isShort(M.cur || M.R[0])) S.card(h.o.t, x, y + 18, {sz:10, maxW:80, bd:h.o.col}); });
+    holes.forEach((h, hi) => { const s = s_(h.y), x = PX(h.x, h.y), y = PY(h.y); S.c.fillStyle = '#052e16'; S.c.beginPath(); S.c.ellipse(x, y, 14 * s * 1.1, 6 * s, 0, 0, 6.283); S.c.fill(); S.c.strokeStyle = '#fff'; S.c.lineWidth = 2; S.c.beginPath(); S.c.moveTo(x, y); S.c.lineTo(x, y - 50 * s); S.c.stroke(); S.c.fillStyle = h.o.col; S.c.beginPath(); S.c.moveTo(x, y - 50 * s); S.c.lineTo(x + 24 * s, y - 43 * s); S.c.lineTo(x, y - 36 * s); S.c.fill(); S.text(h.o.let, x + 8 * s, y - 43 * s, {sz:11 * s + 2}); if (M.isShort(M.cur || M.R[0])) S.card(h.o.t, x, y + 22 + (hi % 2) * 44, {sz:10, maxW:96, bd:h.o.col}); });
     if (L >= 2) { spin += dt * 1.5; walls[0].x = 30 + Math.sin(spin) * 30; }
     walls.slice().sort((a, b) => a.y - b.y).forEach(w => box3(w, '#a16207', '#713f12'));
     if (M.cur) { const sp = 3; for (let s = 0; s < sp; s++) { const d = dt / sp; ball.x += ball.vx * d; ball.y += ball.vy * d; const f = Math.pow(.35, d); ball.vx *= f; ball.vy *= f;
@@ -881,7 +883,7 @@ G52.reg('pong', {name:'تنس الطاولة', icon:'🏓', form:'mcq', render(c
   S.run(dt => {
     if (S.keys.has('left')) pad.x = Math.max(pad.w / 2 + 10, pad.x - 380 * dt); if (S.keys.has('right')) pad.x = Math.min(350 - pad.w / 2, pad.x + 380 * dt);
     S.clear('#0f172a'); S.rr(10, 10, 340, S.H - 20, 12, '#1d4ed8', '#e2e8f0', 4); S.c.strokeStyle = '#e2e8f0'; S.c.setLineDash([8, 8]); S.c.beginPath(); S.c.moveTo(10, S.H / 2); S.c.lineTo(350, S.H / 2); S.c.stroke(); S.c.setLineDash([]);
-    S.rr(10, 6, 340, 12, 4, '#e2e8f0'); slots.forEach(s => { S.rr(s.x, 4, s.w, 18, 4, s.o.col); S.text(s.o.let, s.x + s.w / 2, 13, {sz:12}); if (M.isShort(M.cur || M.R[0])) S.text(s.o.t, s.x + s.w / 2, 36, {sz:11, maxW:s.w + 10, max:2}); });
+    S.rr(10, 6, 340, 12, 4, '#e2e8f0'); slots.forEach(s => { S.rr(s.x, 4, s.w, 18, 4, s.o.col); S.text(s.o.let, s.x + s.w / 2, 13, {sz:7}); if (M.isShort(M.cur || M.R[0])) S.text(s.o.t, s.x + s.w / 2, 42, {sz:11, maxW:s.w - 6, fixW:1, max:2}); });
     if (ball && M.cur) {
       if (ball.wait > 0) ball.wait -= dt; else {
         ball.x += ball.vx * dt; ball.y += ball.vy * dt;
@@ -1158,8 +1160,8 @@ G52.reg('car', {name:'قيادة السيارة', icon:'🏎️', form:'mcq', re
     if (gas && speed > base) { S.emoji('💨', W / 2 - 52, H - 8, 22); S.emoji('💨', W / 2 + 52, H - 8, 22); }
     // لوحة السرعة ودوّاسة البنزين
     /* خانات الخيارات أعلى الشاشة بنفس ألوان المسارات وترتيبها */
-    if (ord.length && !finish) { const n = ord.length, gap = 10, bw = (W - 20 - gap * (n - 1)) / n; S.c.font = S.font(15); const ln = Math.min(2, Math.max(...ord.map(o => S.wrap(o.t, bw - 16, 15).length))), bh = ln * 18 + 14;
-      ord.forEach((o, i) => { const x = 10 + i * (bw + gap), mk = M.marks[o.j]; S.c.globalAlpha = mk === 'no' ? .45 : 1; S.rr(x, 6, bw, bh, 12, o.col, mk === 'ok' ? '#fde047' : '#fff', mk === 'ok' ? 4 : 2.5); S.text((o.e ? o.e + ' ' : '') + o.t, x + bw / 2, 6 + bh / 2, {sz:15, maxW:bw - 16, max:2, stroke:'#0004'}); S.c.globalAlpha = 1; }); }
+    if (ord.length && !finish) { const n = ord.length, gap = 10, bw = (W - 20 - gap * (n - 1)) / n; const fz = Math.min(...ord.map(o => S.fit((o.e ? o.e + ' ' : '') + o.t, bw - 16, 15 * G52.FS, 2, 700).sz)), ln = Math.max(...ord.map(o => S.wrap((o.e ? o.e + ' ' : '') + o.t, bw - 16, fz, 700).length)), bh = Math.min(2, ln) * fz * 1.2 + 12;
+      ord.forEach((o, i) => { const x = 10 + i * (bw + gap), mk = M.marks[o.j]; S.c.globalAlpha = mk === 'no' ? .45 : 1; S.rr(x, 6, bw, bh, 12, o.col, mk === 'ok' ? '#fde047' : '#fff', mk === 'ok' ? 4 : 2.5); S.text((o.e ? o.e + ' ' : '') + o.t, x + bw / 2, 6 + bh / 2, {sz:fz / G52.FS, maxW:bw - 16, fixW:1, noFit:1, max:2, stroke:'#0004'}); S.c.globalAlpha = 1; }); }
     const pg0 = S.glass.find(g => g.pedal); if (pg0) { S.rr(pg0.x - 58, pg0.y - 112, 116, 30, 15, '#0009'); S.text('🏁 ' + U.arn(Math.round(speed / 30)) + ' كم/س', pg0.x, pg0.y - 97, {sz:14}); }
     const pg = S.glass.find(g => g.pedal); if (pg) { S.c.save(); S.c.translate(pg.x, pg.y); S.c.rotate(-.08); S.rr(-42, -66, 84, 132, 16, pg.on ? 'rgba(255,255,255,.55)' : 'rgba(255,255,255,.3)', 'rgba(255,255,255,.85)', 2); for (let k = -4; k <= 4; k++) S.rr(-32, k * 13 - 4, 64, 6, 3, 'rgba(15,23,42,.45)'); S.text('بنزين', 0, 78, {sz:12, stroke:'#0008'}); S.c.restore(); }
     S.fx(dt);
@@ -1187,7 +1189,7 @@ G52.reg('wire', {name:'المسار الضيّق', icon:'〰️', form:'mcq', re
     S.clear('#0f172a'); const draw = (w, col) => { S.c.strokeStyle = col; S.c.lineWidth = w; S.c.lineCap = 'round'; S.c.lineJoin = 'round'; paths.forEach(P => { S.c.beginPath(); P.forEach((q, i) => i ? S.c.lineTo(q.x, q.y) : S.c.moveTo(q.x, q.y)); S.c.stroke(); }); };
     draw(hw * 2 + 6, zap > 0 ? '#fde047' : '#f43f5e'); draw(hw * 2, '#1e293b');
     ends.forEach(e => { S.circle(e.x, e.y, hw + 4, e.o.col); tag(S, M, e.o, e.x, e.y - hw - 22, {maxW:90, sz:11, r:13}); });
-    S.text('ابدأ', 190, 596, {sz:11, col:'#94a3b8'}); S.text('⚡ الفرص: ' + '❤️'.repeat(lives), 60, 14, {sz:12});
+    S.text('ابدأ', 190, 596, {sz:11, col:'#94a3b8'}); S.text('⚡ الفرص: ' + '❤️'.repeat(lives), 300, S.H - 16, {sz:9});
     if (ball) { S.circle(ball.x, ball.y, 7, '#38bdf8', '#e0f2fe', 2); if (!drag && M.cur) S.circle(ball.x, ball.y, 12 + Math.sin(S.t * 5) * 3, null, '#38bdf8', 1); }
     S.fx(dt);
   });
