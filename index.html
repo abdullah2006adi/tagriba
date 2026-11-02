@@ -369,7 +369,7 @@
 .g2-fs.port{padding:max(0px,calc((100vh - 100vw * 16 / 9) / 2)) max(0px,calc((100vw - 100vh * 9 / 16) / 2))!important;padding:max(0px,calc((100dvh - 100vw * 16 / 9) / 2)) max(0px,calc((100vw - 100dvh * 9 / 16) / 2))!important}
 .g2-fs.port>.g2-fsbar{top:max(6px,calc((100vh - 100vw * 16 / 9) / 2 - 40px));right:max(6px,calc((100vw - 100vh * 9 / 16) / 2 - 42px))}
 .g2-fs.port:not(:has(canvas)){overflow:auto;background:linear-gradient(#f8fafc,#f8fafc) content-box,#0f172a!important}
-.g2-fs.port:not(:has(canvas))>*{margin-left:6px;margin-right:6px}
+.g2-fs.port:not(:has(canvas))>*{width:calc(100% - 12px);margin-left:auto!important;margin-right:auto!important;box-sizing:border-box}
 .g2-fs.port .g2-mq{flex:0 0 auto;max-height:30%;overflow:auto;background:#fff;border-radius:12px;padding:2px 6px;margin:4px}
 /* أفقي 16:9 */
 .g2-fs.land{flex-direction:row;align-items:stretch}
@@ -390,7 +390,7 @@ header{background:linear-gradient(135deg,#7c3aed,#0ea5e9);color:#fff;padding:16p
 #stage{max-width:640px;margin:10px auto 10px;background:#fff;border-radius:22px;padding:12px;box-shadow:0 6px 20px #0001;min-height:120px}
 #res{text-align:center;font-weight:800;color:#15803d;min-height:24px;margin:8px}h2.sec{text-align:center;margin:14px 0 4px;color:#6d28d9;font-size:1.05em}
 .note{max-width:640px;margin:0 auto 8px;text-align:center;color:#6b7280;font-size:.9em}
-</style></head><body><header><h1>🎮 معرض الألعاب الجديدة</h1><p>43 لعبة + 4 ألعاب الدروس الأصلية (التصنيف، التوصيل، الذاكرة، الترتيب) = 47 لعبة</p></header>
+</style></head><body><header><h1>🎮 معرض الألعاب الجديدة</h1><p>42 لعبة + 4 ألعاب الدروس الأصلية (التصنيف، التوصيل، الذاكرة، الترتيب) = 46 لعبة</p></header>
 <div class="bar"><label>الصعوبة: <select id="lv"><option value="0">الصف 1–2</option><option value="1">الصف 3–4</option><option value="2">الصف 5–8</option><option value="3">الصف 9–12</option></select></label></div>
 <p class="note">اضغط «ابدأ اللعبة» فتُفتح بملء الشاشة (أفقيًا أو عموديًا). على الحاسوب: الأسهم والمسافة والفأرة. على الجوال: اللمس والأزرار الزجاجية. 🔊 شغّل الصوت.</p>
 <div id="stage"><p style="text-align:center;color:#6b7280">👇 اختر لعبة من القائمة</p></div><div id="res"></div><div id="list"></div>
@@ -580,16 +580,16 @@ G52.stage = function (ctx, o) {
   S.rr = (x, y, w, h, r, fill, stroke, lw) => { c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, r) : c.rect(x, y, w, h); if (fill) { c.fillStyle = fill; c.fill(); } if (stroke) { c.lineWidth = lw || 2; c.strokeStyle = stroke; c.stroke(); } };
   S.circle = (x, y, r, fill, stroke, lw) => { c.beginPath(); c.arc(x, y, r, 0, Math.PI * 2); if (fill) { c.fillStyle = fill; c.fill(); } if (stroke) { c.lineWidth = lw || 2; c.strokeStyle = stroke; c.stroke(); } };
   S.font = (sz, wt) => `${wt || 700} ${sz}px system-ui, "Segoe UI", Tahoma, sans-serif`;
-  S.wrap = (s, maxW, sz, wt) => { c.font = S.font(sz, wt); const words = String(s).split(/\s+/), L = []; let cur = ''; words.forEach(w => { const t = cur ? cur + ' ' + w : w; if (c.measureText(t).width > maxW && cur) { L.push(cur); cur = w; } else cur = t; }); if (cur) L.push(cur); return L; };
+  S.wrap = (s, maxW, sz, wt) => { c.font = S.font(sz, wt); const words = String(s).split(/\s+/), L = []; let cur = ''; words.forEach(w => { const t = cur ? cur + ' ' + w : w; if (c.measureText(t).width * 1.08 > maxW && cur) { L.push(cur); cur = w; } else cur = t; }); if (cur) L.push(cur); return L; };
   /* تصغير الخط تلقائيًا حتى يتسع النص في عرضه وعدد أسطره (ولا يقل عن الحجم الأصلي) */
-  S.fit = (s, maxW, sz, max, wt) => { const min = sz / G52.FS; let L; for (;;) { L = S.wrap(s, maxW, sz, wt); c.font = S.font(sz, wt); if ((L.length <= max && L.every(l => c.measureText(l).width <= maxW + 1)) || sz <= min) break; sz = Math.max(min, sz * .92); } return {sz, L}; };
+  S.fit = (s, maxW, sz, max, wt) => { const min = sz / G52.FS; let L; for (;;) { L = S.wrap(s, maxW, sz, wt); c.font = S.font(sz, wt); if ((L.length <= max && L.every(l => c.measureText(l).width * 1.08 <= maxW + 1)) || sz <= min) break; sz = Math.max(min, sz * .92); } return {sz, L}; };
   S.text = (s, x, y, op) => { op = Object.assign({sz:16, col:'#fff', wt:700, al:'center', bl:'middle', maxW:0, lh:1.2, stroke:null, max:3}, op); op.sz *= G52.FS; if (op.maxW && !op.fixW) op.maxW = Math.min(op.maxW * G52.MW, W - 12); c.font = S.font(op.sz, op.wt); c.direction = 'rtl'; c.textAlign = op.al; c.textBaseline = op.bl;
     let L; if (op.maxW && !op.noFit) { const f = S.fit(s, op.maxW, op.sz, op.max, op.wt); op.sz = f.sz; L = f.L; c.font = S.font(op.sz, op.wt); } else L = op.maxW ? S.wrap(s, op.maxW, op.sz, op.wt) : [String(s)]; if (L.length > op.max) { L = L.slice(0, op.max); L[op.max - 1] += '…'; }
     const y0 = y - (L.length - 1) * op.sz * op.lh / 2; L.forEach((l, i) => { if (op.stroke) { c.lineWidth = 4; c.strokeStyle = op.stroke; c.strokeText(l, x, y0 + i * op.sz * op.lh); } c.fillStyle = op.col; c.fillText(l, x, y0 + i * op.sz * op.lh); }); return L.length; };
   S.emoji = (e, x, y, sz) => { c.font = `${sz}px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(e, x, y); };
   /* بطاقة نص: تعيد أبعادها */
-  S.measure = (s, maxW, sz, fix) => { sz *= G52.FS; maxW = fix ? maxW : Math.min(maxW * G52.MW, W - 12); const f = S.fit(s, maxW, sz, 3, 700); sz = f.sz; const L = f.L.slice(0, 3); c.font = S.font(sz); const w = Math.min(maxW, Math.max(...L.map(l => c.measureText(l).width))); return {w:w + 16, h:L.length * sz * 1.2 + 10, L, sz, maxW}; };
-  S.card = (s, x, y, op) => { op = Object.assign({sz:14, maxW:120, bg:'#fff', fg:'#1f2937', bd:null, e:null}, op); const m = S.measure(s, op.maxW, op.sz, op.fixW); const eh = op.e ? op.sz * 1.6 : 0, w = Math.max(m.w, eh ? op.sz * 2 : 0), h = m.h + eh; x = U.clamp(x, w / 2 + 2, W - w / 2 - 2);
+  S.measure = (s, maxW, sz, fix) => { sz *= G52.FS; maxW = fix ? maxW : Math.min(maxW * G52.MW, W - 12); const f = S.fit(s, maxW, sz, 3, 700); sz = f.sz; const L = f.L.slice(0, 3); c.font = S.font(sz); const w = Math.min(maxW, Math.max(...L.map(l => c.measureText(l).width * 1.08))); return {w:w + 16, h:L.length * sz * 1.2 + 10, L, sz, maxW}; };
+  S.card = (s, x, y, op) => { op = Object.assign({sz:14, maxW:120, bg:'#fff', fg:'#1f2937', bd:null, e:null}, op); const m = S.measure(s, op.maxW, op.sz, op.fixW); const eh = op.e ? op.sz * 1.6 : 0, w = Math.max(m.w, eh ? op.sz * 2 : 0), h = m.h + eh; { const m = c.getTransform(); if (!m.b && !m.c && m.a > 0) { const sx = m.a * x + m.e, hw = (w / 2 + 2) * m.a; if (sx > 0 && sx < cv.width) x = (U.clamp(sx, hw, cv.width - hw) - m.e) / m.a; } }
     S.rr(x - w / 2, y - h / 2, w, h, 10, op.bg, op.bd, 3); if (op.e) S.emoji(op.e, x, y - h / 2 + eh / 2 + 4, op.sz * 1.3); S.text(s, x, y + eh / 2, {sz:m.sz / G52.FS, col:op.fg, maxW:m.maxW + 1, fixW:1, noFit:1, max:3}); return {x:x - w / 2, y:y - h / 2, w, h}; };
   /* جسيمات */
   S.burst = (x, y, col, n, sp) => { for (let i = 0; i < (n || 18); i++) { const a = Math.random() * 6.283, v = U.rnd(40, sp || 220); S.parts.push({x, y, vx:Math.cos(a) * v, vy:Math.sin(a) * v - 60, life:U.rnd(.5, 1), col:Array.isArray(col) ? U.pick(col) : col, r:U.rnd(2, 5)}); } };
@@ -795,7 +795,7 @@ G52.archer = archer; function archer(S, x, y, ang, pow, loaded) {
 G52.reg('bowling', {name:'البولينغ', icon:'🎳', form:'mcq', render(ctx) {
   head(ctx, '🎳', 'البولينغ', 'الكرة تتحرك يمينًا ويسارًا: اضغط (أو المسافة) لإطلاقها، ثم اسحب أو استعمل ⬅➡ لتنحرف قليلًا نحو قوارير الإجابة الصحيحة. احذر القناة الجانبية!');
   const L = ctx.lvl, S = G52.stage(ctx, {w:380, h:G52.PH(380)}); const M = G52.mq(ctx, ctx.cfg.rounds, {tries:3, onRound:() => setP()}); ctx.__M = M;
-  const HY = 70, K = 320, DZ = .625, W0 = 150;
+  const HY = -100, K = 412, DZ = .625, W0 = 150;
   const sy = z => HY + K / (z + DZ), sc = z => (sy(z) - HY) / (K / DZ), sx = (x, z) => 190 + x * W0 * (.3 + .7 * sc(z));
   let ball = null, pins = [], groups = [], bx = 0, rolling = false, curve = 0, rollS = null;
   const setP = () => { const os = U.shuffle(M.opts(M.cur)); const n = os.length; groups = os.map((o, i) => ({o, cx:-1 + 2 * (i + .5) / n})); pins = []; const sp = Math.min(.13, 2 / n / 4.2);
@@ -858,7 +858,7 @@ G52.reg('golf', {name:'الجولف', icon:'⛳', form:'mcq', render(ctx) {
     S.c.fillStyle = '#14532d'; S.c.beginPath(); corners.forEach(([x, y], i) => i ? S.c.lineTo(x, y + (i > 1 ? 14 : 0)) : S.c.moveTo(x, y)); S.c.fill();
     const gg = S.c.createLinearGradient(0, Y0, 0, PY(WH)); gg.addColorStop(0, '#16a34a'); gg.addColorStop(1, '#4ade80'); S.c.fillStyle = gg; S.c.beginPath(); corners.forEach(([x, y], i) => i ? S.c.lineTo(x, y) : S.c.moveTo(x, y)); S.c.fill();
     for (let y = 0; y < WH; y += 40) { S.c.fillStyle = '#ffffff12'; S.c.beginPath(); [[0, y], [WW, y], [WW, y + 20], [0, y + 20]].forEach(([x, yy], i) => i ? S.c.lineTo(PX(x, yy), PY(yy)) : S.c.moveTo(PX(x, yy), PY(yy))); S.c.fill(); }
-    holes.forEach((h, hi) => { const s = s_(h.y), x = PX(h.x, h.y), y = PY(h.y); S.c.fillStyle = '#052e16'; S.c.beginPath(); S.c.ellipse(x, y, 14 * s * 1.1, 6 * s, 0, 0, 6.283); S.c.fill(); S.c.strokeStyle = '#fff'; S.c.lineWidth = 2; S.c.beginPath(); S.c.moveTo(x, y); S.c.lineTo(x, y - 50 * s); S.c.stroke(); S.c.fillStyle = h.o.col; S.c.beginPath(); S.c.moveTo(x, y - 50 * s); S.c.lineTo(x + 24 * s, y - 43 * s); S.c.lineTo(x, y - 36 * s); S.c.fill(); S.text(h.o.let, x + 8 * s, y - 43 * s, {sz:11 * s + 2}); if (M.isShort(M.cur || M.R[0])) S.card(h.o.t, x, y - 50 * s - 24 - (hi % 2) * 42, {sz:10, maxW:96, bd:h.o.col}); });
+    holes.forEach((h, hi) => { const s = s_(h.y), x = PX(h.x, h.y), y = PY(h.y); S.c.fillStyle = '#052e16'; S.c.beginPath(); S.c.ellipse(x, y, 14 * s * 1.1, 6 * s, 0, 0, 6.283); S.c.fill(); S.c.strokeStyle = '#fff'; S.c.lineWidth = 2; S.c.beginPath(); S.c.moveTo(x, y); S.c.lineTo(x, y - 50 * s); S.c.stroke(); S.c.fillStyle = h.o.col; S.c.beginPath(); S.c.moveTo(x, y - 50 * s); S.c.lineTo(x + 24 * s, y - 43 * s); S.c.lineTo(x, y - 36 * s); S.c.fill(); if (!M.isShort(M.cur || M.R[0])) S.text(h.o.let, x + 8 * s, y - 43 * s, {sz:(11 * s + 2) / G52.FS * 1.2}); if (M.isShort(M.cur || M.R[0])) S.card(h.o.t, x, y - 50 * s - 24 - (hi % 2) * 42, {sz:10, maxW:96, bd:h.o.col}); });
     if (L >= 2) { spin += dt * 1.5; walls[0].x = 30 + Math.sin(spin) * 30; }
     walls.slice().sort((a, b) => a.y - b.y).forEach(w => box3(w, '#a16207', '#713f12'));
     if (M.cur) { const sp = 3; for (let s = 0; s < sp; s++) { const d = dt / sp; ball.x += ball.vx * d; ball.y += ball.vy * d; const f = Math.pow(.35, d); ball.vx *= f; ball.vy *= f;
@@ -1343,8 +1343,8 @@ G52.reg('shooter', {name:'سفينة الفضاء', icon:'🚀', form:'cls', ren
   const L = ctx.lvl, K = G52.col(ctx); ctx.__K = K; goalBar(ctx, K); const S = G52.stage(ctx, {w:380, h:G52.PH(380), glass:[G52.GL.round('fire', 58, G52.PH(380) - 58, 46, '🔥')]});
   let ship = {x:190}, bullets = [], rocks = [], st = .5, cd = 0, stars = Array.from({length:60}, () => ({x:U.rnd(0, 380), y:U.rnd(0, 610), s:U.rnd(.5, 2)}));
   /* عصا تحكم أسفل اليمين: تُسحب يمينًا/يسارًا */
-  const SY = S.H - 128, JX = 288, JY = S.H - 52, JR = 62; let js = null, jo = 0;
-  S.onDown = (p, e) => { if (p.x > 190 && p.y > S.H - 130) { js = e ? e.pointerId : 0; jo = U.clamp(p.x - JX, -JR, JR); } };
+  const SY = S.H - 118, JX = 318, JY = S.H - 44, JR = 36; let js = null, jo = 0;
+  S.onDown = (p, e) => { if (p.x > JX - JR - 40 && p.y > S.H - 90) { js = e ? e.pointerId : 0; jo = U.clamp(p.x - JX, -JR, JR); } };
   S.onMove = (p, e) => { if (js !== null && (e ? e.pointerId : 0) === js) jo = U.clamp(p.x - JX, -JR, JR); };
   S.onUp = (p, e) => { if (js !== null && (e ? e.pointerId : 0) === js) { js = null; jo = 0; } };
   S.run(dt => {
@@ -1360,8 +1360,8 @@ G52.reg('shooter', {name:'سفينة الفضاء', icon:'🚀', form:'cls', ren
     rocks = rocks.filter(r => !r.dead && r.y < S.H + 40);
     bullets.forEach(b => S.rr(b.x - 2, b.y - 8, 4, 14, 2, '#fde047'));
     S.c.save(); S.c.translate(ship.x, SY); S.c.rotate(-Math.PI / 4); S.emoji('🚀', 0, 0, 42); S.c.restore();
-    S.rr(JX - JR - 30, JY - 30, JR * 2 + 60, 60, 30, 'rgba(255,255,255,.18)', 'rgba(255,255,255,.6)', 2); S.text('◀', JX - JR - 8, JY, {sz:9, col:'rgba(255,255,255,.7)'}); S.text('▶', JX + JR + 8, JY, {sz:9, col:'rgba(255,255,255,.7)'});
-    const kg = S.c.createRadialGradient(JX + jo - 8, JY - 8, 4, JX + jo, JY, 28); kg.addColorStop(0, 'rgba(255,255,255,.85)'); kg.addColorStop(1, 'rgba(255,255,255,.35)'); S.circle(JX + jo, JY, 27, kg, '#fff', 2);
+    S.rr(JX - JR - 22, JY - 22, JR * 2 + 44, 44, 22, 'rgba(255,255,255,.18)', 'rgba(255,255,255,.6)', 2); S.text('◀', JX - JR - 10, JY, {sz:6, col:'rgba(255,255,255,.7)'}); S.text('▶', JX + JR + 10, JY, {sz:6, col:'rgba(255,255,255,.7)'});
+    const kg = S.c.createRadialGradient(JX + jo - 6, JY - 6, 3, JX + jo, JY, 20); kg.addColorStop(0, 'rgba(255,255,255,.85)'); kg.addColorStop(1, 'rgba(255,255,255,.35)'); S.circle(JX + jo, JY, 19, kg, '#fff', 2);
     K.hud(S); S.fx(dt);
   });
 }});
@@ -1371,7 +1371,7 @@ G52.reg('snake', {name:'الثعبان', icon:'🐍', form:'cls', render(ctx) {
   head(ctx, '🐍', 'الثعبان', 'وجّه الثعبان بإصبعك نحو المكان الذي تريد (أو بالأسهم). كُل البطاقات الصحيحة ليطول، وابتعد عن الخاطئة وعن جسمك!');
   const L = ctx.lvl, K = G52.col(ctx); ctx.__K = K; goalBar(ctx, K); const S = G52.stage(ctx, {w:400, h:G52.PH(400)});
   let sn = {x:200, y:S.H - 80, a:-Math.PI / 2, body:[], len:60}, food = [], inv = 1.5, tgt = null;
-  const put = () => { while (food.length < 4) { const it = K.next(.9); let x, y, t = 0; do { x = U.rnd(50, 350); y = U.rnd(70, S.H - 50); t++; } while (t < 30 && (food.some(f => Math.hypot(f.x - x, f.y - y) < 90) || Math.hypot(x - sn.x, y - sn.y) < 90)); food.push({it, x, y}); } };
+  const put = () => { while (food.length < 4) { const it = K.next(.9); let x, y, t = 0; do { x = U.rnd(50, 350); y = U.rnd(70, S.H - 50); t++; } while (t < 30 && (food.some(f => Math.hypot(f.x - x, f.y - y) < 90) || Math.hypot(x - sn.x, y - sn.y) < 90)); food.push({it, x, y}); } if (!K.over && !food.some(f => K.isGood(f.it)) && food.length) { const rest = K.G.filter(g => !food.some(f => f.it === g)); food[U.ri(0, food.length - 1)].it = U.pick(rest.length ? rest : K.G); } };
   S.onDown = p => tgt = p; S.onMove = p => { if (S.ptr.down) tgt = p; }; S.onUp = () => tgt = null;
   put();
   S.run(dt => {
@@ -1405,7 +1405,7 @@ G52.reg('slice', {name:'تقطيع الفواكه', icon:'🍉', form:'cls', ren
   S.run(dt => {
     S.clear('#3f2a1d'); for (let y = 0; y < 640; y += 26) { S.c.fillStyle = y / 26 % 2 ? '#4a3222' : '#3f2a1d'; S.c.fillRect(0, y, 400, 26); }
     splats.forEach(s => { s.t -= dt; S.c.globalAlpha = Math.max(0, s.t / 1.5) * .7; S.circle(s.x, s.y, s.r, s.c); }); S.c.globalAlpha = 1; splats = splats.filter(s => s.t > 0);
-    if (!K.over) { tt -= dt; if (tt <= 0) { tt = U.rnd(.8, 1.3) / (1 + L * .2); const n = U.ri(1, L >= 2 ? 3 : 2); for (let i = 0; i < n; i++) { const it = K.next(.8), x = U.rnd(70, 330); fr.push({it, x, y:650, vx:(200 - x) * U.rnd(.2, .5), vy:-U.rnd(640, 730), a:0, va:U.rnd(-2, 2), r:30, k:U.pick(FR)}); } SN().whoosh(.08); } }
+    if (!K.over) { tt -= dt; if (tt <= 0) { tt = U.rnd(1.3, 1.8) / (1 + L * .12); const n = L >= 2 && Math.random() < .5 ? 2 : 1, xs = n === 2 ? [U.rnd(70, 150), U.rnd(250, 330)] : [U.rnd(80, 320)]; for (let i = 0; i < n; i++) { const it = K.next(.8), x = xs[i]; fr.push({it, x, y:650, vx:(200 - x) * U.rnd(.04, .14), vy:-U.rnd(640, 730), a:0, va:U.rnd(-2, 2), r:30, k:U.pick(FR)}); } SN().whoosh(.08); } }
     fr.forEach(f => { f.vy += 620 * dt; f.x += f.vx * dt; f.y += f.vy * dt; f.a += f.va * dt; const good = K.isGood(f.it);
       S.c.save(); S.c.translate(f.x, f.y); S.c.rotate(f.a); S.emoji(good || true ? (good ? f.k[0] : '💣') : '', 0, 0, 52); S.c.restore(); S.card(T(f.it), f.x, f.y + 40, {sz:11, maxW:110, bg:good ? '#fff' : '#fff', bd:'#0003'}); });
     // القطع: مقطع من الأثر يمر بالفاكهة
@@ -1650,7 +1650,7 @@ G52.reg('duckhunt', {name:'صيد البط', icon:'🦆', form:'mcq', render(ctx
     S.c.fillStyle = '#4d7c0f'; S.c.fillRect(0, 340, 800, 70); for (let x = 0; x < 800; x += 26) S.emoji('🌾', x, 338, 30);
     quack -= dt; if (quack <= 0 && M.cur) { quack = U.rnd(1.5, 3); SN().tone(420, .12, {type:'sawtooth', v:.06, to:300}); }
     ducks.forEach(d => { if (d.dead) { d.fall += dt; d.y += 260 * dt; } else { d.t += dt; if (d.t > [1.6, 1.2, .9, .7][L]) { d.t = 0; d.vx = U.rnd(-1, 1) * [120, 160, 200, 240][L]; d.vy = U.rnd(-1, .5) * [70, 90, 110, 130][L]; } d.x += d.vx * dt; d.y += d.vy * dt; if (d.x < 40 || d.x > 760) d.vx *= -1; if (d.y < 40) d.vy = Math.abs(d.vy); if (d.y > 290) d.vy = -Math.abs(d.vy) - 30; d.x = U.clamp(d.x, 40, 760); }
-      S.c.save(); S.c.translate(d.x, d.y); if (d.vx > 0) S.c.scale(-1, 1); if (d.dead) S.c.rotate(2.6); S.emoji('🦆', 0, 0, 40); S.c.restore(); S.circle(d.x + 14, d.y - 18, 12, d.o.col, '#fff', 2); S.text(d.o.let, d.x + 14, d.y - 17, {sz:12}); if (M.isShort(M.cur || M.R[0]) && !d.dead) S.card(d.o.t, d.x, d.y + 30, {sz:10, maxW:90, bd:d.o.col}); });
+      S.c.save(); S.c.translate(d.x, d.y); if (d.vx > 0) S.c.scale(-1, 1); if (d.dead) S.c.rotate(2.6); S.emoji('🦆', 0, 0, 40); S.c.restore(); if (!M.isShort(M.cur || M.R[0])) { S.circle(d.x + 14, d.y - 18, 12, d.o.col, '#fff', 2); S.text(d.o.let, d.x + 14, d.y - 17, {sz:7}); } if (M.isShort(M.cur || M.R[0]) && !d.dead) S.card(d.o.t, d.x, d.y + 30, {sz:10, maxW:90, bd:d.o.col}); });
     S.circle(cross.x, cross.y, 18, null, '#dc2626', 2.5); S.c.strokeStyle = '#dc2626'; S.c.beginPath(); S.c.moveTo(cross.x - 26, cross.y); S.c.lineTo(cross.x + 26, cross.y); S.c.moveTo(cross.x, cross.y - 26); S.c.lineTo(cross.x, cross.y + 26); S.c.stroke();
     S.fx(dt);
   });
@@ -1661,7 +1661,7 @@ G52.reg('diver', {name:'الغوّاص', icon:'🤿', form:'cls', render(ctx) {
   head(ctx, '🤿', 'الغوّاص', 'اسبح بالغوّاص بإصبعك (أو الأسهم) والتقط البطاقات الصحيحة في الأعماق، وتجنّب الخاطئة وقناديل البحر ⚡. الأكسجين ينفد: اصعد إلى السطح لتتنفس!');
   const L = ctx.lvl, K = G52.col(ctx, {need:6}); ctx.__K = K; const S = G52.stage(ctx, {w:400, h:G52.PH(400)}); const SB = S.H;
   let D = {x:200, y:80, vx:0, vy:0, face:1}, ox = 1, its = [], jel = [], bub = [], inv = 0;
-  const fill = () => { while (its.length < 5) { let x, y, t = 0; do { x = U.rnd(60, 340); y = U.rnd(200, SB - 70); t++; } while (t < 40 && its.some(o => Math.abs(o.x - x) < 130 && Math.abs(o.y - y) < 80)); its.push({it:K.next(.9), x, y, ph:Math.random() * 6}); } };
+  const fill = () => { while (its.length < 5) { let x, y, t = 0; do { x = U.rnd(60, 340); y = U.rnd(200, SB - 70); t++; } while (t < 40 && its.some(o => Math.abs(o.x - x) < 130 && Math.abs(o.y - y) < 80)); its.push({it:K.next(.9), x, y, ph:Math.random() * 6}); } if (!K.over && !its.some(o => K.isGood(o.it))) { const rest = K.G.filter(g => !its.some(o => o.it === g)); its[U.ri(0, its.length - 1)].it = U.pick(rest.length ? rest : K.G); } };
   for (let i = 0; i < [1, 2, 3, 3][L]; i++) jel.push({x:U.rnd(40, 360), y:U.rnd(190, SB - 90), vx:U.rnd(-1, 1) * 30, ph:Math.random() * 6});
   fill();
   S.run(dt => {
@@ -1691,35 +1691,6 @@ const head = (ctx, ic, t, ins) => { ctx.host.innerHTML = ctx.head(ic, t, ins); }
 const T = G52.T, E = it => U.O(it).e, SN = () => G52.snd;
 const need = (ctx, Q) => { ctx.__Qb = () => (ctx.cfg.q ? '🎯 ' + U.plain(ctx.cfg.q) + ' — ' : '') + 'التالي: ' + U.arn(Math.min(Q.k + 1, Q.I.length)) + ' من ' + U.arn(Q.I.length); return () => {}; };
 const shelf = (S, Q, y) => { const n = Q.I.length, w = (S.W - 20) / n; Q.I.forEach((it, i) => { const x = S.W - 10 - w * (i + .5); S.rr(x - w / 2 + 2, y, w - 4, 26, 6, i < Q.k ? '#22c55e' : '#ffffff22', '#ffffff55', 1); S.text(i < Q.k ? T(it).slice(0, 14) : U.arn(i + 1), x, y + 13, {sz:6.5, maxW:w - 6, fixW:1, max:1}); }); };
-
-/* 1) آلة الملقط: حرّك الملقط والتقط العناصر بالترتيب */
-G52.reg('claw', {name:'آلة الملقط', icon:'🕹️', form:'seq', render(ctx) {
-  head(ctx, '🕹️', 'آلة الملقط', 'حرّك الملقط بـ ⬅➡ (أو اسحب)، ثم اضغط المسافة (أو ⬇) لإنزاله والتقاط العنصر التالي في الترتيب. انتبه: قد يفلت إن لم يكن الملقط في منتصفه!');
-  const L = ctx.lvl, Q = G52.sq(ctx); ctx.__Q = Q; const up = need(ctx, Q); const S = G52.stage(ctx, {w:380, h:G52.PH(380)});
-  let cl = {x:190, y:60, st:'move', g:null}, toys = U.shuffle(Q.I).map((it, i) => ({it, x:140 + (i % 4) * 66 + U.rnd(-6, 6), y:450 - Math.floor(i / 4) * 64, vy:0})), chute = [];
-  const drop = () => { if (cl.st === 'move' && !Q.over) { cl.st = 'down'; SN().tone(200, .8, {to:120, type:'sawtooth', v:.04}); } };
-  S.onKey = (k, d) => { if (d && (k === 'down' || k === 'fire')) drop(); }; S.onUp = p => { if (Math.abs(p.x - S.ptr.sx) < 10) drop(); }; S.onMove = p => { if (S.ptr.down && cl.st === 'move') cl.x = U.clamp(p.x, 110, 345); };
-  S.run(dt => {
-    S.clear('#1e1b4b'); S.c.translate(0, (S.H - 520) / 2); const cab = S.c.createLinearGradient(0, 0, 380, 0); cab.addColorStop(0, '#be185d'); cab.addColorStop(.5, '#ec4899'); cab.addColorStop(1, '#be185d'); S.rr(4, 30, 372, 486, 18, cab);
-    S.rr(14, 40, 352, 18, 6, '#fde047'); for (let i = 0; i < 16; i++) S.circle(24 + i * 22, 49, 4, (Math.floor(S.t * 4) + i) % 2 ? '#fff' : '#f59e0b');
-    const gl = S.c.createLinearGradient(0, 62, 0, 500); gl.addColorStop(0, '#312e81'); gl.addColorStop(1, '#4338ca'); S.rr(16, 62, 348, 440, 8, gl);
-    S.c.fillStyle = '#ffffff14'; S.c.beginPath(); S.c.moveTo(30, 62); S.c.lineTo(90, 62); S.c.lineTo(40, 500); S.c.lineTo(20, 500); S.c.fill();
-    S.rr(16, 476, 348, 26, 4, '#a855f7'); S.rr(16, 62, 348, 6, 2, '#94a3b8'); S.rr(cl.x - 22, 62, 44, 12, 4, '#64748b', '#334155', 2);
-    S.rr(18, 150, 80, 326, 0, '#0f172a'); S.rr(14, 140, 88, 14, 4, '#f59e0b', '#b45309', 2); S.c.fillStyle = '#020617'; S.c.beginPath(); S.c.ellipse(58, 154, 36, 8, 0, 0, 6.283); S.c.fill();
-    S.text('⬇ المخرج', 58, 124, {sz:13, col:'#fde047', stroke:'#0008'}); S.rr(24, 468, 68, 30, 6, '#020617', '#f59e0b', 2); S.text('🎁', 58, 484, {sz:14});
-    chute.forEach(c => { c.y += 380 * .016; S.circle(58, c.y, 22, c.col); }); chute = chute.filter(c => c.y < 470);
-    if (cl.st === 'move') { const mv = (S.keys.has('right') ? 1 : 0) - (S.keys.has('left') ? 1 : 0); cl.x = U.clamp(cl.x + mv * 180 * dt, 110, 345); }
-    if (cl.st === 'down') { cl.y += 220 * dt; const t = toys.find(t => Math.abs(t.x - cl.x) < 30 && cl.y + 30 > t.y - 26); if (t || cl.y > 460) { cl.st = 'up'; if (t) { const off = Math.abs(t.x - cl.x); const slip = off > [26, 20, 15, 11][L] || Math.random() < [0, .05, .12, .18][L]; cl.g = t; cl.slip = slip ? U.rnd(.2, .7) : 9; SN().click(); } } }
-    if (cl.st === 'up') { cl.y -= 200 * dt; if (cl.g) { cl.g.x = cl.x; cl.g.y = cl.y + 50; cl.slip -= dt; if (cl.slip <= 0) { cl.g.vy = 1; SN().bounce(); S.float('أفلت!', cl.x, cl.y, '#fde68a'); cl.g = null; } } if (cl.y <= 60) { cl.y = 60; cl.st = cl.g ? 'carry' : 'move'; } }
-    if (cl.st === 'carry') { cl.x -= 200 * dt; cl.g.x = cl.x; if (cl.x <= 58) { cl.x = 58; const t = cl.g; cl.g = null; cl.st = 'ret'; if (Q.take(t.it, 58, 160, S)) { SN().coin(); chute.push({y:160, col:'#fde047'}); toys = toys.filter(x => x !== t); up(); } else { SN().buzz(); t.x = U.rnd(140, 330); t.y = 120; t.vy = 1; } } }
-    if (cl.st === 'ret') { cl.x += 220 * dt; if (cl.x >= 160) { cl.x = 160; cl.st = 'move'; } }
-    toys.forEach(t => { if (t.vy) { t.vy += 600 * dt; t.y += t.vy * dt; const fl = 440 - (toys.filter(o => o !== t && Math.abs(o.x - t.x) < 50 && o.y > t.y && !o.vy).length ? 60 : 0); if (t.y >= fl) { t.y = fl; t.vy = 0; } } const tc = ['#f472b6', '#fbbf24', '#34d399', '#60a5fa', '#f87171'][Q.I.indexOf(t.it) % 5]; S.c.save(); S.c.beginPath(); S.c.arc(t.x, t.y, 30, Math.PI, 0); S.c.fillStyle = tc; S.c.fill(); S.c.beginPath(); S.c.arc(t.x, t.y, 30, 0, Math.PI); S.c.fillStyle = '#f8fafc'; S.c.fill(); S.c.restore(); S.circle(t.x - 10, t.y - 14, 5, '#ffffff99'); S.circle(t.x, t.y, 30, null, '#1e293b55', 2); S.text((E(t.it) || '') + ' ' + T(t.it), t.x, t.y, {sz:6.5, maxW:58, fixW:1, max:3, col:'#111827', stroke:'#ffffffcc'}); });
-    S.c.strokeStyle = '#cbd5e1'; S.c.lineWidth = 3; S.c.beginPath(); S.c.moveTo(cl.x, 72); S.c.lineTo(cl.x, cl.y); S.c.stroke(); const op = cl.st === 'down' ? 1 : (cl.g ? .15 : .45);
-    const mg = S.c.createLinearGradient(cl.x - 16, 0, cl.x + 16, 0); mg.addColorStop(0, '#64748b'); mg.addColorStop(.5, '#e2e8f0'); mg.addColorStop(1, '#475569'); S.rr(cl.x - 16, cl.y - 6, 32, 16, 6, mg, '#334155', 2); S.circle(cl.x, cl.y + 2, 4, '#ef4444');
-    S.c.lineCap = 'round'; [-1, 0, 1].forEach(sd => { const a = sd * (.25 + op * .55); S.c.strokeStyle = '#94a3b8'; S.c.lineWidth = 5; S.c.beginPath(); const x1 = cl.x + sd * 10, y1 = cl.y + 10, x2 = x1 + Math.sin(a) * 22, y2 = y1 + Math.cos(a) * 20; S.c.moveTo(x1, y1); S.c.lineTo(x2, y2); S.c.lineTo(x2 - sd * 8, y2 + 10); S.c.stroke(); S.circle(x1, y1, 3, '#475569'); });
-    shelf(S, Q, 6); S.fx(dt);
-  });
-}});
 
 /* 3) التتريس: القطع تسقط، ضع كل قطعة في عمود رقم ترتيبها */
 G52.reg('tetris', {name:'التتريس', icon:'🟦', form:'seq', render(ctx) {
@@ -1777,7 +1748,7 @@ G52.reg('ringtoss', {name:'رمي الحلقات', icon:'⭕', form:'seq', rende
       if (ring) draws.push({z:P(ring.x, ring.y, ring.z) ? P(ring.x, ring.y, ring.z).z : 0, f:() => { const q = P(ring.x, ring.y, ring.z); if (!q) return; S.c.strokeStyle = '#dc2626'; S.c.lineWidth = Math.max(2, q.s * .045); S.c.beginPath(); S.c.ellipse(q.x, q.y, q.s * .2, q.s * .06 + Math.abs(Math.sin(ring.spin)) * q.s * .03, 0, 0, 6.283); S.c.stroke(); }}); }
     draws.sort((a, b) => b.z - a.z).forEach(d => d.f());
     // نقاط التصويب
-    if (!ring && !Q.over && (charging || L <= 1)) { const v = 4.5 + (charging ? pow : .45) * 6.5, el = .62; let x = .35, y = 1.25, z = .4, vx = Math.sin(yaw) * v * Math.cos(el), vz = Math.cos(yaw) * v * Math.cos(el), vy = v * Math.sin(el); for (let i = 0; i < [14, 10, 6, 4][L]; i++) { for (let j = 0; j < 4; j++) { vy -= 9.8 * .02; x += vx * .02; y += vy * .02; z += vz * .02; } const q = P(x, Math.max(0, y), z); if (q) S.circle(q.x, q.y, Math.max(2, q.s * .02), '#ffffffcc'); } }
+    if (!ring && !Q.over) { const v = 4.5 + (charging ? pow : .45) * 6.5, el = .62; let x = .35, y = 1.25, z = .4, vx = Math.sin(yaw) * v * Math.cos(el), vz = Math.cos(yaw) * v * Math.cos(el), vy = v * Math.sin(el); for (let i = 0; i < [16, 14, 12, 10][L]; i++) { for (let j = 0; j < 4; j++) { vy -= 9.8 * .02; x += vx * .02; y += vy * .02; z += vz * .02; } const q = P(x, Math.max(0, y), z); if (q) S.circle(q.x, q.y, Math.max(3.5, q.s * .03), '#ffffff', '#1e293b', 1.5); } }
     // اليد الممسكة بالحلقة
     tossT -= dt; const hx = 560 + (charging ? -pow * 18 : 0) + (tossT > 0 ? -40 * tossT / .3 : 0), hy = 350 + (charging ? pow * 30 : 0) + (tossT > 0 ? -60 * tossT / .3 : 0);
     if (!ring || tossT > 0) { S.c.strokeStyle = '#dc2626'; S.c.lineWidth = 9; S.c.beginPath(); S.c.ellipse(hx - 36, hy - 34, 46, 16, -.2, 0, 6.283); S.c.stroke(); S.c.strokeStyle = '#fca5a5'; S.c.lineWidth = 3; S.c.beginPath(); S.c.ellipse(hx - 36, hy - 36, 46, 16, -.2, Math.PI * 1.1, Math.PI * 1.6); S.c.stroke(); }
@@ -1870,16 +1841,24 @@ G52.reg('wordsearch', {name:'البحث عن الكلمات', icon:'🔍', form:
   W.forEach(w => { const L = letters(w.w); for (let t = 0; t < 200; t++) { const d = U.pick(D), x = U.ri(0, N - 1 - d[0] * (L.length - 1)), y = U.ri(0, N - 1 - d[1] * (L.length - 1)); if (L.every((ch, i) => !G[y + d[1] * i][x + d[0] * i] || G[y + d[1] * i][x + d[0] * i] === ch)) { L.forEach((ch, i) => G[y + d[1] * i][x + d[0] * i] = ch); placed.push({w, L, x, y, d}); return; } } });
   for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) if (!G[y][x]) G[y][x] = U.pick([...AR.slice(0, 28)]);
   let a = null, found = 0;
-  ctx.host.innerHTML = ctx.head('🔍', 'البحث عن الكلمات', 'اضغط الحرف الأول ثم الحرف الأخير من كل كلمة') + `<div class="ws-list">${placed.map((p, i) => `<span class="ws-w" id="ww${i}">${esc(bare(p.w.w))}</span>`).join('')}</div><div class="g52-ws" style="grid-template-columns:repeat(${N},1fr)">${G.map((r, y) => r.map((ch, x) => `<button class="ws-c" data-x="${x}" data-y="${y}">${ch}</button>`).join('')).join('')}</div>`;
+  ctx.host.innerHTML = ctx.head('🔍', 'البحث عن الكلمات', 'ضع إصبعك على الحرف الأول من الكلمة واسحبه إلى الحرف الأخير ثم ارفعه') + `<div class="ws-list">${placed.map((p, i) => `<span class="ws-w" id="ww${i}">${esc(bare(p.w.w))}</span>`).join('')}</div><div class="g52-ws" style="grid-template-columns:repeat(${N},1fr)">${G.map((r, y) => r.map((ch, x) => `<button class="ws-c" data-x="${x}" data-y="${y}">${ch}</button>`).join('')).join('')}</div>`;
   const cell = (x, y) => ctx.$(`.ws-c[data-x="${x}"][data-y="${y}"]`);
-  ctx.$$('.ws-c').forEach(b => b.onclick = () => { const x = +b.dataset.x, y = +b.dataset.y;
-    if (!a) { a = [x, y]; b.classList.add('sel'); return; }
+  /* التحديد بالسحب من الحرف الأول إلى الأخير */
+  const grid = ctx.$('.g52-ws'); grid.style.touchAction = 'none'; let st = null, path = [];
+  const at = e => { const el = document.elementFromPoint(e.clientX, e.clientY); return el && el.classList && el.classList.contains('ws-c') ? [+el.dataset.x, +el.dataset.y] : null; };
+  const line = (s, t) => { const dx = t[0] - s[0], dy = t[1] - s[1], n = Math.max(Math.abs(dx), Math.abs(dy)); if (dx && dy && Math.abs(dx) !== Math.abs(dy)) return null; return Array.from({length:n + 1}, (_, i) => [s[0] + Math.sign(dx) * i, s[1] + Math.sign(dy) * i]); };
+  const paint = () => { ctx.$$('.ws-c.sel').forEach(c => c.classList.remove('sel')); path.forEach(([x, y]) => { const c = cell(x, y); if (c) c.classList.add('sel'); }); };
+  grid.addEventListener('pointerdown', e => { const p = at(e); if (!p) return; e.preventDefault(); try { grid.setPointerCapture(e.pointerId); } catch (_) {} st = p; path = [p]; paint(); ctx.api.sfx && ctx.api.sfx('tap'); });
+  grid.addEventListener('pointermove', e => { if (!st) return; const p = at(e); if (!p) return; const l = line(st, p); if (l) { path = l; paint(); } });
+  const end = () => { if (!st) return; const s = st, t = path[path.length - 1]; st = null; if (path.length < 2) { path = []; paint(); return; } path = []; check(s, t); };
+  grid.addEventListener('pointerup', end); grid.addEventListener('pointercancel', () => { st = null; path = []; paint(); });
+  const check = (a, [x, y]) => { const b = cell(x, y);
     const p = placed.findIndex(p => !p.done && ((p.x === a[0] && p.y === a[1] && p.x + p.d[0] * (p.L.length - 1) === x && p.y + p.d[1] * (p.L.length - 1) === y) || (p.x === x && p.y === y && p.x + p.d[0] * (p.L.length - 1) === a[0] && p.y + p.d[1] * (p.L.length - 1) === a[1])));
     ctx.$$('.ws-c.sel').forEach(c => c.classList.remove('sel')); a = null;
     if (p >= 0) { const P = placed[p]; P.done = true; found++; P.L.forEach((_, i) => cell(P.x + P.d[0] * i, P.y + P.d[1] * i).classList.add('fd', 'h' + (p % 5))); ctx.$('#ww' + p).classList.add('done'); ctx.ok(); ctx.api.praise(); if (found >= placed.length) ctx.after(800, () => ctx.done(1)); }
-    else { ctx.bad(b); } });
-  ctx.__P = placed; ctx.__cell = cell;
-}, solve(ctx) { ctx.__P.forEach(p => { ctx.__cell(p.x, p.y).click(); ctx.__cell(p.x + p.d[0] * (p.L.length - 1), p.y + p.d[1] * (p.L.length - 1)).click(); }); }});
+    else { ctx.bad(b); } };
+  ctx.__P = placed; ctx.__cell = cell; ctx.__chk = check;
+}, solve(ctx) { ctx.__P.forEach(p => ctx.__chk([p.x, p.y], [p.x + p.d[0] * (p.L.length - 1), p.y + p.d[1] * (p.L.length - 1)])); }});
 
 /* 3) الكلمات المتقاطعة */
 function layout(words) {
